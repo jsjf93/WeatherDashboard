@@ -60,6 +60,7 @@ function App() {
     location: "London",
     ...MOCK_WEATHER_DATA["London"],
   });
+  const [showFullInsights, setShowFullInsights] = useState(false);
 
   const getThemeColors = () => {
     if (!currentWeather) return "theme-cloudy";
@@ -145,37 +146,56 @@ function App() {
         </div>
 
         <div className="w-full max-w-3xl mx-auto flex gap-2">
-          <Card>
-            <h2 className="text-xs font-semibold mb-2 uppercase">
-              <span className="flex items-center gap-2">
-                <Sparkles /> AI Insights
-              </span>
-            </h2>
-            <p className="w-full text-lg line-clamp-3">
-              Get personalized weather insights powered by AI. This is a test to
-              check that it wraps correctly. Enjoy tailored advice for your
-              daily activities based on the latest weather data. Stay ahead of
-              changing conditions with our smart recommendations. Whether you're
-              planning outdoor adventures or daily commutes, our AI insights
-              have got you covered.
-            </p>
-          </Card>
+          <div className="flex-1">
+            <Card>
+              <div className="flex flex-col min-h-36 items-start">
+                <h2 className="text-xs font-semibold mb-2 uppercase">
+                  <span className="flex items-center gap-2">
+                    <Sparkles /> AI Insights
+                  </span>
+                </h2>
+                <p
+                  className={`w-full text-lg ${!showFullInsights ? "line-clamp-3" : ""}`}
+                >
+                  Get personalized weather insights powered by AI. This is a
+                  test to check that it wraps correctly. Enjoy tailored advice
+                  for your daily activities based on the latest weather data.
+                  Stay ahead of changing conditions with our smart
+                  recommendations. Whether you're planning outdoor adventures or
+                  daily commutes, our AI insights have got you covered.
+                </p>
+                <button
+                  onClick={() => setShowFullInsights(!showFullInsights)}
+                  className="text-sm mt-2 underline hover:no-underline"
+                >
+                  {showFullInsights ? "Show less" : "Show more"}
+                </button>
+              </div>
+            </Card>
+          </div>
 
-          <Card>
-            <div className="flex flex-col gap-3">
-              <h2 className="text-xs font-semibold uppercase">Forecast</h2>
-              <div className="flex items-center gap-4 whitespace-nowrap">
-                <span className="w-20">Today</span>
-                <Sun size={24} className="shrink-0" />
-                <span className="font-semibold">17°C</span>
+          <div className="flex-none w-55">
+            <Card>
+              <div className="flex flex-col gap-3 min-h-36">
+                <h2 className="text-xs font-semibold uppercase">Forecast</h2>
+                <div className="flex items-center gap-4 whitespace-nowrap justify-between">
+                  <span className="w-20">Today</span>
+                  <Sun size={24} className="shrink-0" />
+                  <span className="font-semibold">17°C</span>
+                </div>
+                <div className="flex items-center gap-4 whitespace-nowrap justify-between">
+                  <span className="w-20">Tomorrow</span>
+                  <Cloud size={24} className="shrink-0" />
+                  <span className="font-semibold">19°C</span>
+                </div>
+                <div className="flex items-center gap-4 whitespace-nowrap justify-between">
+                  <span className="w-20">Wednesday</span>
+                  <Sun size={24} className="shrink-0" />
+                  <span className="font-semibold">20°C</span>
+                </div>
               </div>
-              <div className="flex items-center gap-4 whitespace-nowrap">
-                <span className="w-20">Tomorrow</span>
-                <Cloud size={24} className="shrink-0" />
-                <span className="font-semibold">19°C</span>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
