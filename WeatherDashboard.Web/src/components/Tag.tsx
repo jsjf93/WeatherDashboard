@@ -10,7 +10,8 @@ export function Tag({ label, onClick }: TagProps) {
 
   return (
     <Component
-      className="rounded-full glass px-3 py-1 text-sm"
+      className="rounded-full glass px-3 py-1 text-sm data-[isButton='true']:cursor-pointer hover:brightness-95 transition"
+      data-isButton={!!onClick}
       onClick={onClick}
     >
       {label}

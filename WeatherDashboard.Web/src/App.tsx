@@ -146,22 +146,34 @@ function App() {
 
         <div className="w-full max-w-3xl mx-auto flex gap-2">
           <Card>
-            <h2 className="text-lg font-semibold mb-2 ">
+            <h2 className="text-xs font-semibold mb-2 uppercase">
               <span className="flex items-center gap-2">
                 <Sparkles /> AI Insights
               </span>
             </h2>
-            <p className="w-full">
+            <p className="w-full text-lg line-clamp-3">
               Get personalized weather insights powered by AI. This is a test to
-              check that it wraps correctly
+              check that it wraps correctly. Enjoy tailored advice for your
+              daily activities based on the latest weather data. Stay ahead of
+              changing conditions with our smart recommendations. Whether you're
+              planning outdoor adventures or daily commutes, our AI insights
+              have got you covered.
             </p>
           </Card>
 
           <Card>
-            <div className="flex flex-col ">
-              <h2 className="text-lg font-semibold mb-2">Forecast</h2>
-              <span>Today: 17°C</span>
-              <span>Tomorrow: 19°C</span>
+            <div className="flex flex-col gap-3">
+              <h2 className="text-xs font-semibold uppercase">Forecast</h2>
+              <div className="flex items-center gap-4 whitespace-nowrap">
+                <span className="w-20">Today</span>
+                <Sun size={24} className="shrink-0" />
+                <span className="font-semibold">17°C</span>
+              </div>
+              <div className="flex items-center gap-4 whitespace-nowrap">
+                <span className="w-20">Tomorrow</span>
+                <Cloud size={24} className="shrink-0" />
+                <span className="font-semibold">19°C</span>
+              </div>
             </div>
           </Card>
         </div>
