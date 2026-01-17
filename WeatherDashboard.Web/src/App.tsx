@@ -1,12 +1,36 @@
+import { Card } from "./components/Card";
 import { SearchBar } from "./components/SearchBar";
+import { Tag } from "./components/Tag";
+import {
+  Wind,
+  Droplet,
+  Cloud,
+  CloudRain,
+  CloudSnow,
+  Sun,
+  Star,
+  Sparkles,
+} from "lucide-react";
+
+const favouritedLocations = ["London", "New York", "Lisbon", "Madrid"];
 
 type WeatherData = {
+  location: string;
   condition: string;
+  description: string;
+  windSpeed: number;
+  humidity: number;
+  temperature: number;
 };
 
 function App() {
   const currentWeather: WeatherData = {
+    location: "London",
     condition: "sunny",
+    description: "Clear sky",
+    windSpeed: 10,
+    humidity: 60,
+    temperature: 15,
   };
 
   const getThemeColors = () => {
@@ -16,7 +40,7 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen ${getThemeColors()}`}
+      className={`min-h-screen p-4 md:p-10 ${getThemeColors()}`}
       style={{ background: "var(--bg-gradient)" }}
     >
       <div className="flex flex-col items-center py-10">
@@ -27,6 +51,82 @@ function App() {
       </div>
 
       <SearchBar />
+
+      <div className="flex gap-2 justify-center mt-2 mb-10">
+        {favouritedLocations.map((location) => (
+          <Tag key={location} label={location} />
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-2 w-full max-w-3xl mx-auto">
+        <div className="w-full mx-auto">
+          <Card>
+            <div className="flex justify-between relative">
+              <button className="absolute top-0 right-0">
+                <Star size={40} />
+              </button>
+              <div>
+                <h2 className="text-4xl font-semibold mb-2">
+                  {currentWeather.location}
+                </h2>
+                <p className="text-lg mb-4">{currentWeather.description}</p>
+                <div className="flex gap-4">
+                  <div className="flex flex-col gap-2">
+                    <Tag
+                      label={
+                        <div className="flex gap-2 items-center font-bold">
+                          <Wind /> {currentWeather.windSpeed} km/h
+                        </div>
+                      }
+                    />
+                    <Tag
+                      label={
+                        <div className="flex gap-2 items-center font-bold">
+                          <Droplet /> {currentWeather.humidity}%
+                        </div>
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="pr-10 text-6xl font-bold flex flex-col items-center justify-center gap-2">
+                {currentWeather.condition === "sunny" && <Sun size={100} />}
+                {currentWeather.condition === "cloudy" && <Cloud size={100} />}
+                {currentWeather.condition === "rainy" && (
+                  <CloudRain size={100} />
+                )}
+                {currentWeather.condition === "snowy" && (
+                  <CloudSnow size={100} />
+                )}
+                <div>{currentWeather.temperature}°C</div>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        <div className="w-full max-w-3xl mx-auto flex gap-2">
+          <Card>
+            <h2 className="text-lg font-semibold mb-2 ">
+              <span className="flex items-center gap-2">
+                <Sparkles /> AI Insights
+              </span>
+            </h2>
+            <p className="w-full">
+              Get personalized weather insights powered by AI. This is a test to
+              check that it wraps correctly
+            </p>
+          </Card>
+
+          <Card>
+            <div className="flex flex-col ">
+              <h2 className="text-lg font-semibold mb-2">Forecast</h2>
+              <span>Today: 17°C</span>
+              <span>Tomorrow: 19°C</span>
+            </div>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
