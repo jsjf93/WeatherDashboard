@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card } from "./components/Card";
 import { SearchBar } from "./components/SearchBar";
 import { Tag } from "./components/Tag";
@@ -12,7 +13,38 @@ import {
   Sparkles,
 } from "lucide-react";
 
-const favouritedLocations = ["London", "New York", "Lisbon", "Madrid"];
+const MOCK_WEATHER_DATA = {
+  London: {
+    condition: "sunny",
+    description: "Clear sky",
+    windSpeed: 10,
+    humidity: 60,
+    temperature: 15,
+  },
+  "New York": {
+    condition: "cloudy",
+    description: "Overcast clouds",
+    windSpeed: 8,
+    humidity: 70,
+    temperature: 20,
+  },
+  Lisbon: {
+    condition: "rainy",
+    description: "Light rain",
+    windSpeed: 12,
+    humidity: 80,
+    temperature: 18,
+  },
+  Madrid: {
+    condition: "snowy",
+    description: "Snow showers",
+    windSpeed: 5,
+    humidity: 90,
+    temperature: 2,
+  },
+};
+
+const favouritedLocations = Object.keys(MOCK_WEATHER_DATA);
 
 type WeatherData = {
   location: string;
@@ -24,14 +56,10 @@ type WeatherData = {
 };
 
 function App() {
-  const currentWeather: WeatherData = {
+  const [currentWeather, setCurrentWeather] = useState<WeatherData>({
     location: "London",
-    condition: "sunny",
-    description: "Clear sky",
-    windSpeed: 10,
-    humidity: 60,
-    temperature: 15,
-  };
+    ...MOCK_WEATHER_DATA["London"],
+  });
 
   const getThemeColors = () => {
     if (!currentWeather) return "theme-cloudy";
@@ -54,7 +82,18 @@ function App() {
 
       <div className="flex gap-2 justify-center mt-2 mb-10">
         {favouritedLocations.map((location) => (
-          <Tag key={location} label={location} />
+          <Tag
+            key={location}
+            label={location}
+            onClick={() =>
+              setCurrentWeather({
+                location,
+                ...MOCK_WEATHER_DATA[
+                  location as keyof typeof MOCK_WEATHER_DATA
+                ],
+              })
+            }
+          />
         ))}
       </div>
 
