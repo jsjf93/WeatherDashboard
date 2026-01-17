@@ -20,7 +20,10 @@ export function LocationWeather({ currentWeather }: LocationWeatherProps) {
     <div className="w-full mx-auto">
       <Card>
         <div className="flex justify-between relative">
-          <button className="absolute top-0 right-0" aria-label="Favourite">
+          <button
+            className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition"
+            aria-label="Favourite"
+          >
             <Star size={40} />
           </button>
           <div>
