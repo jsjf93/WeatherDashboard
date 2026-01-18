@@ -33,7 +33,8 @@ public sealed class GetWeatherByCityEndpoint : Endpoint<GetWeatherByCityRequest,
 
         if (weatherResponse == null)
         {
-            await Send.NotFoundAsync(ct); // TODO: Think we need to override something in order to return problem details?
+            AddError(r => r.City, "City not found", "city.not_found");
+            await Send.ErrorsAsync(statusCode: 404, cancellation: ct);
             return;
         }
 
