@@ -8,6 +8,19 @@ using WeatherDashboard.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var frontendUrl = builder.Configuration["FrontendUrl"] ?? throw new ArgumentNullException("FrontendUrl is not set in configuration");
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(frontendUrl)
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
 builder.Services
     .AddFastEndpoints()
     .SwaggerDocument(options =>
@@ -29,6 +42,8 @@ builder.Services.AddHttpClient<IWeatherService, WeatherService>((sp, client) =>
 });
 
 var app = builder.Build();
+
+app.UseCors();
 
 app.UseFastEndpoints(config =>
 {
