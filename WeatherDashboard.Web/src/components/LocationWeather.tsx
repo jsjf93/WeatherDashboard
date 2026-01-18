@@ -14,10 +14,28 @@ import { useIsAuthenticated } from "@azure/msal-react";
 
 interface LocationWeatherProps {
   currentWeather: WeatherResponse;
+  isLoading: boolean;
 }
 
-export function LocationWeather({ currentWeather }: LocationWeatherProps) {
+export function LocationWeather({
+  currentWeather,
+  isLoading,
+}: LocationWeatherProps) {
   const isAuthenticated = useIsAuthenticated();
+
+  if (isLoading) {
+    return (
+      <div className="w-full mx-auto">
+        <Card>
+          <div className="animate-pulse flex flex-col gap-4">
+            <div className="h-8 bg-gray-300 rounded w-1/3"></div>
+            <div className="h-6 bg-gray-300 rounded w-1/2"></div>
+            <div className="h-20 bg-gray-300 rounded w-full"></div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full mx-auto">
