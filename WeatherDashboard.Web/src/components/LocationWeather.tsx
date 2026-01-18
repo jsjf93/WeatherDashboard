@@ -84,7 +84,7 @@ export function LocationWeather({
             {currentWeather.condition === "Clouds" && <Cloud size={100} />}
             {currentWeather.condition === "Rain" && <CloudRain size={100} />}
             {currentWeather.condition === "Snow" && <CloudSnow size={100} />}
-            <div>{currentWeather.temperature.toFixed(0)}°C</div>
+            <div>{Math.round(currentWeather.temperature)}°C</div>
           </div>
         </div>
       </Card>

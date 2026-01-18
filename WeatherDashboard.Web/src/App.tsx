@@ -3,7 +3,10 @@ import { Insights } from "./components/Insights";
 import { Forecast } from "./components/Forecast";
 import { LocationWeather } from "./components/LocationWeather.tsx";
 import { Header } from "./components/Header.tsx";
-import { useGetWeatherByCityQuery } from "./services/weatherApi.ts";
+import {
+  useGetForecastByCityQuery,
+  useGetWeatherByCityQuery,
+} from "./services/weatherApi.ts";
 import { useAppSelector } from "./hooks/useRedux";
 import { selectCurrentLocation } from "./features/location/locationSlice";
 
@@ -16,6 +19,10 @@ function App() {
       skip: !location,
     },
   );
+
+  const { data: forecastWeather } = useGetForecastByCityQuery(location!, {
+    skip: !location,
+  });
 
   const getThemeColors = () => {
     if (!currentWeather) return "theme-Clouds";
@@ -48,7 +55,7 @@ function App() {
 
           <div className="w-full max-w-3xl mx-auto flex flex-col md:flex-row gap-2 md:gap-4">
             <Insights />
-            <Forecast />
+            <Forecast forecastData={forecastWeather?.dailySummaries} />
           </div>
         </div>
       </main>

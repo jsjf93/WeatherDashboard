@@ -33,6 +33,8 @@ builder.Services
         };
     });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.Configure<OpenWeatherMapOptions>(builder.Configuration.GetSection(OpenWeatherMapOptions.SectionName));
 
 builder.Services.AddHttpClient<IWeatherService, WeatherService>((sp, client) =>
