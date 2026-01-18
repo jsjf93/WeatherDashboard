@@ -43,6 +43,9 @@ builder.Services.AddHttpClient<IWeatherService, WeatherService>((sp, client) =>
     client.BaseAddress = new Uri(options.BaseUrl);
 });
 
+builder.Services.Configure<AzureOpenAiOptions>(builder.Configuration.GetSection(AzureOpenAiOptions.SectionName));
+builder.Services.AddHttpClient<IAiService, AiService>();
+
 var app = builder.Build();
 
 app.UseCors();
