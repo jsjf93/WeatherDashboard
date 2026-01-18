@@ -1,8 +1,9 @@
 import { PublicClientApplication } from "@azure/msal-browser";
+import Env from "../../Env";
 
 const msalConfig = {
   auth: {
-    clientId: import.meta.env.VITE_AZURE_CLIENT_ID,
+    clientId: Env.AZURE_CLIENT_ID,
     authority: `https://login.microsoftonline.com/common`,
     redirectUri: window.location.origin,
   },
