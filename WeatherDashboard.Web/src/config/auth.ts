@@ -14,4 +14,6 @@ const msalConfig = {
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
-export { msalInstance };
+const scopes = ["openid", "profile", "email"];
+
+export { msalInstance, scopes };

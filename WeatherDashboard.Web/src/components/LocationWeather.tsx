@@ -10,19 +10,27 @@ import {
 import { Card } from "./Card";
 import type { WeatherData } from "../types.ts";
 import { Tag } from "./Tag.tsx";
+import { useIsAuthenticated } from "@azure/msal-react";
 
 interface LocationWeatherProps {
   currentWeather: WeatherData;
 }
 
 export function LocationWeather({ currentWeather }: LocationWeatherProps) {
+  const isAuthenticated = useIsAuthenticated();
+
   return (
     <div className="w-full mx-auto">
       <Card>
         <div className="flex justify-between relative">
           <button
-            className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition"
-            aria-label="Favourite"
+            className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
+            aria-label={`Add ${currentWeather.location} to your favourites`}
+            disabled={!isAuthenticated}
+            // Add a proper tooltip and maybe a lock icon at some point
+            title={
+              isAuthenticated ? "Favourite" : "Login to favourite locations"
+            }
           >
             <Star size={40} />
           </button>

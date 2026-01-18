@@ -1,31 +1,33 @@
 import { useMsal } from "@azure/msal-react";
+import { LogIn, LogOut } from "lucide-react";
+import { scopes } from "../config/auth";
 
 export function AuthButton() {
   const { instance, accounts } = useMsal();
 
   const handleLogin = () => {
     instance.loginRedirect({
-      scopes: ["openid", "profile", "email"],
+      scopes,
     });
   };
 
-  if (accounts.length > 0) {
-    return (
-      <button
-        onClick={() => instance.logoutRedirect()}
-        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 text-sm font-medium"
-      >
-        Logout
-      </button>
-    );
+  const isLoggedIn = accounts.length > 0;
+
+  function handleClick() {
+    if (isLoggedIn) {
+      instance.logoutRedirect();
+    } else {
+      handleLogin();
+    }
   }
 
   return (
     <button
-      onClick={handleLogin}
-      className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200 font-medium"
+      onClick={handleClick}
+      className="flex gap-2 items-center px-5 py-1 bg-white text-black rounded-lg hover:bg-gray-100 cursor-pointer transition-colors duration-200 font-medium"
     >
-      Login
+      {isLoggedIn ? <LogOut size={20} /> : <LogIn size={20} />}
+      {isLoggedIn ? "Logout" : "Login"}
     </button>
   );
 }
