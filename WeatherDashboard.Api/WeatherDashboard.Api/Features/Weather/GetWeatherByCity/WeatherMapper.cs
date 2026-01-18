@@ -9,9 +9,10 @@ public sealed class WeatherMapper : Mapper<GetWeatherByCityRequest, GetWeatherBy
     {
         return new GetWeatherByCityResponse
         {
-            Location = e.Name,
+            City = e.Name,
             Temperature = e.Main.Temp,
-            Condition = e.Weather.FirstOrDefault()?.Main,
+            Condition = e.Weather.FirstOrDefault()?.Main ?? "Unknown",
+            Description = e.Weather.FirstOrDefault()?.Description ?? "No description",
             Wind = e.Wind.Speed,
             Humidity = e.Main.Humidity
         };
