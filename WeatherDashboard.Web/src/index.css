@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @layer base {
-  .theme-sunny {
+  /* Note the case sensitivity of the theme classes. They are based on OpenWeatherMap conditions */
+  .theme-Clear {
     --bg-gradient: linear-gradient(135deg, hsl(45 80% 45%), hsl(30 70% 35%));
     --accent-color: hsl(45 100% 90%);
   }
-  .theme-rainy {
+  .theme-Rain {
     --bg-gradient: linear-gradient(
       135deg,
       hsl(210 100% 50%),
@@ -13,11 +14,11 @@
     );
     --accent-color: hsl(200 100% 90%);
   }
-  .theme-cloudy {
+  .theme-Clouds {
     --bg-gradient: linear-gradient(135deg, hsl(210 20% 70%), hsl(220 20% 50%));
     --accent-color: hsl(0 0% 100%);
   }
-  .theme-snowy {
+  .theme-Snow {
     --bg-gradient: linear-gradient(
       135deg,
       hsl(190 100% 85%),

@@ -8,12 +8,12 @@ import {
   CloudSnow,
 } from "lucide-react";
 import { Card } from "./Card";
-import type { WeatherData } from "../types.ts";
+import type { WeatherResponse } from "../types";
 import { Tag } from "./Tag.tsx";
 import { useIsAuthenticated } from "@azure/msal-react";
 
 interface LocationWeatherProps {
-  currentWeather: WeatherData;
+  currentWeather: WeatherResponse;
 }
 
 export function LocationWeather({ currentWeather }: LocationWeatherProps) {
@@ -25,18 +25,20 @@ export function LocationWeather({ currentWeather }: LocationWeatherProps) {
         <div className="flex justify-between relative">
           <button
             className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
-            aria-label={`Add ${currentWeather.location} to your favourites`}
+            aria-label={`Add ${currentWeather.city} to your favourites`}
             disabled={!isAuthenticated}
             // Add a proper tooltip and maybe a lock icon at some point
             title={
-              isAuthenticated ? "Favourite" : "Login to favourite locations"
+              isAuthenticated
+                ? `Add ${currentWeather.city} to your favourites`
+                : "Login to favourite locations"
             }
           >
             <Star size={40} />
           </button>
           <div>
             <h2 className="text-4xl font-semibold mb-2">
-              {currentWeather.location}
+              {currentWeather.city}
             </h2>
             <p className="text-lg mb-4">{currentWeather.description}</p>
             <div className="flex gap-4">
@@ -60,11 +62,11 @@ export function LocationWeather({ currentWeather }: LocationWeatherProps) {
           </div>
 
           <div className="pr-10 text-6xl font-bold flex flex-col items-center justify-center gap-2">
-            {currentWeather.condition === "sunny" && <Sun size={100} />}
-            {currentWeather.condition === "cloudy" && <Cloud size={100} />}
-            {currentWeather.condition === "rainy" && <CloudRain size={100} />}
-            {currentWeather.condition === "snowy" && <CloudSnow size={100} />}
-            <div>{currentWeather.temperature}°C</div>
+            {currentWeather.condition === "Clear" && <Sun size={100} />}
+            {currentWeather.condition === "Clouds" && <Cloud size={100} />}
+            {currentWeather.condition === "Rain" && <CloudRain size={100} />}
+            {currentWeather.condition === "Snow" && <CloudSnow size={100} />}
+            <div>{currentWeather.temperature.toFixed(0)}°C</div>
           </div>
         </div>
       </Card>
