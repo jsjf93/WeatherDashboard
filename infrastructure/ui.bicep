@@ -1,7 +1,7 @@
 param location string
 
 resource staticWebApp 'Microsoft.Web/staticSites@2023-01-01' = {
-  name: 'WeatherDashboardUI'
+  name: 'weatherdashboard-ui'
   location: location
   sku: {
     name: 'Free'

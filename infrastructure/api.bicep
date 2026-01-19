@@ -1,7 +1,7 @@
 param location string
 
 resource apiApp 'Microsoft.Web/sites@2023-01-01' = {
-  name: 'WeatherDashboardApi'
+  name: 'weatherdashboard-api'
   location: location
   kind: 'app,linux'
   properties: {
@@ -19,7 +19,7 @@ resource apiApp 'Microsoft.Web/sites@2023-01-01' = {
 }
 
 resource apiServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
-  name: 'WeatherDashboardApiServicePlan'
+  name: 'weatherdashboard-plan'
   location: location
   kind: 'linux'
   sku: {
