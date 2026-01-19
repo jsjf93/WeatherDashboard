@@ -1,0 +1,118 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Infrastructure
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ secrets.AZURE_RG }}
+          template: ./infrastructure/main.bicep
+          parameters: location=uksouth
+          deploymentName: weatherdashboard-${{ github.run_number }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore .NET dependencies
+        run: dotnet restore WeatherDashboard.Api/WeatherDashboard.Api.csproj
+
+      - name: Build .NET project
+        run: dotnet build WeatherDashboard.Api/WeatherDashboard.Api.csproj --configuration Release
+
+      - name: Publish .NET project
+        run: dotnet publish WeatherDashboard.Api/WeatherDashboard.Api.csproj --configuration Release --output ./publish
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22.x"
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: WeatherDashboard.Web
+
+      - name: Build UI
+        run: npm run build
+        working-directory: WeatherDashboard.Web
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_AZURE_CLIENT_ID: ${{ secrets.VITE_AZURE_CLIENT_ID }}
+          VITE_AZURE_TENANT_ID: ${{ secrets.VITE_AZURE_TENANT_ID }}
+
+      - name: Deploy API to Azure
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: "WeatherDashboardApi"
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "./publish"
+
+      - name: Configure API App Settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: "WeatherDashboardApi"
+          app-settings-json: |
+            [
+              {
+                "name": "OpenWeatherMap__ApiKey",
+                "value": "${{ secrets.OPENWEATHERMAP_API_KEY }}",
+                "slotSetting": false
+              },
+              {
+                "name": "OpenWeatherMap__BaseUrl",
+                "value": "https://api.openweathermap.org/data/2.5/",
+                "slotSetting": false
+              },
+              {
+                "name": "AzureOpenAi__Endpoint",
+                "value": "${{ secrets.AZURE_OPENAI_ENDPOINT }}",
+                "slotSetting": false
+              },
+              {
+                "name": "AzureOpenAi__ApiKey",
+                "value": "${{ secrets.AZURE_OPENAI_API_KEY }}",
+                "slotSetting": false
+              },
+              {
+                "name": "AzureOpenAi__ModelName",
+                "value": "gpt-4",
+                "slotSetting": false
+              },
+              {
+                "name": "AzureOpenAi__DeploymentName",
+                "value": "${{ secrets.AZURE_OPENAI_DEPLOYMENT_NAME }}",
+                "slotSetting": false
+              },
+              {
+                "name": "FrontendUrl",
+                "value": "${{ secrets.FRONTEND_URL }}",
+                "slotSetting": false
+              }
+            ]
+
+      - name: Deploy UI to Azure Static Web App
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "WeatherDashboard.Web"
+          output_location: "dist"
