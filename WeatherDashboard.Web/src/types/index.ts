@@ -40,3 +40,7 @@ export interface ForecastItem {
   rain3h?: number;
   snow3h?: number;
 }
+
+export interface ForecastSummaryResponse {
+  summary: string;
+}

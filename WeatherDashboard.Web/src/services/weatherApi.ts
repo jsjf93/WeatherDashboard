@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Env from "../../Env";
-import type { ForecastResponse, WeatherResponse } from "../types";
+import type {
+  ForecastResponse,
+  ForecastSummaryResponse,
+  WeatherResponse,
+} from "../types";
 
 export const weatherApi = createApi({
   reducerPath: "weatherApi",
@@ -12,8 +16,14 @@ export const weatherApi = createApi({
     getForecastByCity: builder.query<ForecastResponse, string>({
       query: (city: string) => `forecast/city?city=${encodeURIComponent(city)}`,
     }),
+    getForecastSummary: builder.query<ForecastSummaryResponse, string>({
+      query: (city: string) => `forecast/${encodeURIComponent(city)}/summary`,
+    }),
   }),
 });
 
-export const { useGetWeatherByCityQuery, useGetForecastByCityQuery } =
-  weatherApi;
+export const {
+  useGetWeatherByCityQuery,
+  useGetForecastByCityQuery,
+  useGetForecastSummaryQuery,
+} = weatherApi;

@@ -20,7 +20,11 @@ function App() {
     },
   );
 
-  const { data: forecastWeather } = useGetForecastByCityQuery(location!, {
+  const {
+    data: forecastWeather,
+    isSuccess: isForecastSuccess,
+    isFetching: isForecastFetching, // We need this so that we don't show the previous search insights
+  } = useGetForecastByCityQuery(location!, {
     skip: !location,
   });
 
@@ -54,7 +58,10 @@ function App() {
           )}
 
           <div className="w-full max-w-3xl mx-auto flex flex-col md:flex-row gap-2 md:gap-4">
-            <Insights />
+            <Insights
+              city={location ?? undefined}
+              isForecastReady={isForecastSuccess && !isForecastFetching}
+            />
             <Forecast forecastData={forecastWeather?.dailySummaries} />
           </div>
         </div>
