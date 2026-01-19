@@ -14,7 +14,6 @@ resource staticWebApp 'Microsoft.Web/staticSites@2023-01-01' = {
       appLocation: 'WeatherDashboard.Web'
       apiLocation: ''
       outputLocation: 'dist'
-      nodeVersion: '22'
     }
   }
 }
