@@ -27,7 +27,7 @@ public sealed class GetForecastSummaryEndpoint : Endpoint<GetForecastSummaryRequ
         {
             s.Summary = "Get AI-generated weather forecast summary";
             s.Description = "Retrieves an AI-generated summary of the weather forecast (max 400 characters) for the specified city.";
-            s.ExampleRequest = new GetForecastSummaryRequest { City = "London" };
+            s.ExampleRequest = new GetForecastSummaryRequest("London");
             s.Response<GetForecastSummaryResponse>(200, "Successful retrieval of forecast summary");
             s.Response(404, "Forecast data not found for the specified city");
         });
@@ -53,10 +53,7 @@ public sealed class GetForecastSummaryEndpoint : Endpoint<GetForecastSummaryRequ
             return;
         }
 
-        Response = new GetForecastSummaryResponse
-        {
-            Summary = summary
-        };
+        Response = new GetForecastSummaryResponse(summary);
 
         await Send.OkAsync(Response, ct);
     }
