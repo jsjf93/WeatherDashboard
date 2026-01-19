@@ -1,0 +1,23 @@
+{
+  "build": {
+    "appLocation": "WeatherDashboard.Web",
+    "apiLocation": "",
+    "outputLocation": "dist",
+    "appBuildCommand": "npm run build",
+    "skipAppBuild": false,
+    "nodeVersion": "22"
+  },
+  "routes": [
+    {
+      "route": "/*",
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "serve": "/index.html",
+      "statusCode": 200
+    }
+  }
+}
