@@ -24,7 +24,7 @@ jobs:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
           template: ./infrastructure/main.bicep
-          parameters: location=uksouth
+          parameters: location=westeurope
           deploymentName: weatherdashboard-${{ github.run_number }}
 
       - name: Setup .NET
