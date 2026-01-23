@@ -3,7 +3,7 @@ using WeatherDashboard.Api.Services;
 
 namespace WeatherDashboard.Api.Features.Weather.GetForecastByCity;
 
-public sealed class GetForecastByCityEndpoint : Endpoint<GetForecastByCityRequest, GetForecastByCityResponse, ForecastMapper> 
+public sealed class GetForecastByCityEndpoint : Endpoint<GetForecastByCityRequest, GetForecastByCityResponse, CondensedForecastMapper>
 {
     private readonly IWeatherService _weatherService;
 
@@ -29,17 +29,18 @@ public sealed class GetForecastByCityEndpoint : Endpoint<GetForecastByCityReques
     
     public override async Task HandleAsync(GetForecastByCityRequest req, CancellationToken ct)
     {
-        var forecastResponse = await _weatherService.GetForecastByCityAsync(req.City, ct);
+        var condensedForecast = await _weatherService.GetForecastByCityAsync(req.City, ct);
 
-        if (forecastResponse == null)
+        if (condensedForecast == null)
         {
             AddError(r => r.City, "City not found", "city.not_found");
             await Send.ErrorsAsync(statusCode: 404, cancellation: ct);
             return;
         }
 
-        Response = Map.FromEntity(forecastResponse);
+        Response = Map.FromEntity(condensedForecast);
 
         await Send.OkAsync(Response, ct);
     }
 }
+

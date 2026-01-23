@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using WeatherDashboard.Api.Configuration;
+using WeatherDashboard.Api.Features.Weather.Utilities;
 using WeatherDashboard.Api.Models;
 
 namespace WeatherDashboard.Api.Services;
@@ -64,11 +65,11 @@ public class WeatherService : IWeatherService
         }
     }
 
-    public async Task<ForecastResponse?> GetForecastByCityAsync(string city, CancellationToken cancellationToken)
+    public async Task<CondensedForecastData?> GetForecastByCityAsync(string city, CancellationToken cancellationToken)
     {
         var cacheKey = $"weather_forecast_city_{city.ToLower()}";
 
-        if (_cache.TryGetValue<ForecastResponse>(cacheKey, out var cachedForecast))
+        if (_cache.TryGetValue<CondensedForecastData>(cacheKey, out var cachedForecast))
         {
             return cachedForecast;
         }
@@ -94,14 +95,16 @@ public class WeatherService : IWeatherService
                 return null;
             }
 
+            var condensedForecast = ForecastCondenser.Condense(forecastResponse);
+
             var cacheOptions = new MemoryCacheEntryOptions
             {
                 SlidingExpiration = TimeSpan.FromHours(1)
             };
 
-            _cache.Set(cacheKey, forecastResponse, cacheOptions);
+            _cache.Set(cacheKey, condensedForecast, cacheOptions);
 
-            return forecastResponse;
+            return condensedForecast;
         }
         catch (HttpRequestException ex)
         {

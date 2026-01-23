@@ -37,7 +37,7 @@ public sealed class GetForecastSummaryEndpoint : Endpoint<GetForecastSummaryRequ
     {
         var cacheKey = $"weather_forecast_city_{req.City.ToLower()}";
         
-        if (!_cache.TryGetValue<ForecastResponse>(cacheKey, out var forecastData) || forecastData == null)
+        if (!_cache.TryGetValue<CondensedForecastData>(cacheKey, out var forecastData) || forecastData == null)
         {
             AddError(r => r.City, "Forecast not found. Please request the forecast endpoint first.", "forecast.not_found");
             await Send.ErrorsAsync(statusCode: 404, cancellation: ct);

@@ -2,6 +2,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using WeatherDashboard.Api.Configuration;
+using WeatherDashboard.Api.Models;
 
 namespace WeatherDashboard.Api.Services;
 
@@ -18,7 +19,7 @@ public class AiService : IAiService
         _httpClient = httpClient;
     }
 
-    public async Task<string?> GenerateForecastSummaryAsync(string city, object forecastData, CancellationToken cancellationToken)
+    public async Task<string?> GenerateForecastSummaryAsync(string city, CondensedForecastData forecastData, CancellationToken cancellationToken)
     {
         var cacheKey = $"forecast_summary_{city.ToLower()}";
 
@@ -45,7 +46,7 @@ Requirements:
                     new { role = "system", content = "You are a helpful weather forecast assistant. Provide concise, practical weather summaries." },
                     new { role = "user", content = prompt }
                 },
-                max_completion_tokens = 6000,
+                max_completion_tokens = 1000,
                 temperature = 1.0,
             };
 
