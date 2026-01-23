@@ -68,7 +68,7 @@ export function LocationWeather({
                   <Tag
                     label={
                       <div className="flex gap-2 items-center font-bold">
-                        <Wind /> {currentWeather.windSpeed} km/h
+                        <Wind /> {currentWeather.wind} km/h
                       </div>
                     }
                   />

@@ -13,7 +13,7 @@ import { selectCurrentLocation } from "./features/location/locationSlice";
 function App() {
   const location = useAppSelector(selectCurrentLocation);
 
-  const { data: currentWeather, isFetching } = useGetWeatherByCityQuery(
+  const { data: currentWeather, isFetching, isLoading } = useGetWeatherByCityQuery(
     location!,
     {
       skip: !location,
@@ -52,7 +52,7 @@ function App() {
         <div className="flex flex-col gap-2 md:gap-4 w-full max-w-3xl mx-auto">
           <LocationWeather
             currentWeather={currentWeather}
-            isLoading={isFetching}
+            isLoading={isFetching || isLoading}
           />
 
           <div className="w-full max-w-3xl mx-auto flex flex-col md:flex-row gap-2 md:gap-4">

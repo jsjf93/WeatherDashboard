@@ -2,14 +2,13 @@ export interface WeatherResponse {
   city: string;
   temperature: number;
   humidity: number;
-  windSpeed: number;
+  wind: number;
   condition: "Clear" | "Clouds" | "Rain" | "Snow";
   description: string;
 }
 
 export interface ForecastResponse {
   dailySummaries: DailyForecast[];
-  fullForecast: ForecastItem[];
 }
 
 export interface DailyForecast {
@@ -19,6 +18,10 @@ export interface DailyForecast {
   minTemp: number;
   maxTemp: number;
   condition: "Clear" | "Clouds" | "Rain" | "Snow";
+  feelsLike: number;
+  humidity: number;
+  windSpeed: number;
+  description: string;
 }
 
 export interface ForecastItem {
