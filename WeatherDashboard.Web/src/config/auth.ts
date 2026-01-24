@@ -4,7 +4,7 @@ import Env from "../../Env";
 const msalConfig = {
   auth: {
     clientId: Env.AZURE_CLIENT_ID,
-    authority: `https://login.microsoftonline.com/common`,
+    authority: `https://login.microsoftonline.com/${Env.AZURE_TENANT_ID}`,
     redirectUri: window.location.origin,
   },
   cache: {
@@ -16,5 +16,6 @@ const msalConfig = {
 const msalInstance = new PublicClientApplication(msalConfig);
 
 const scopes = ["openid", "profile", "email"];
+const apiScope = `api://${Env.AZURE_API_SCOPE_ID}/api.access`;
 
-export { msalInstance, scopes };
+export { msalInstance, scopes, apiScope };

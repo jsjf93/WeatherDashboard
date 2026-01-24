@@ -9,16 +9,19 @@ import {
 } from "./services/weatherApi.ts";
 import { useAppSelector } from "./hooks/useRedux";
 import { selectCurrentLocation } from "./features/location/locationSlice";
+import { useAuthErrorHandler } from "./hooks/useAuthErrorHandler";
 
 function App() {
-  const location = useAppSelector(selectCurrentLocation);
+  useAuthErrorHandler();
 
-  const { data: currentWeather, isFetching, isLoading } = useGetWeatherByCityQuery(
-    location!,
-    {
-      skip: !location,
-    },
-  );
+  const location = useAppSelector(selectCurrentLocation);
+  const {
+    data: currentWeather,
+    isFetching,
+    isLoading,
+  } = useGetWeatherByCityQuery(location!, {
+    skip: !location,
+  });
 
   const {
     data: forecastWeather,
