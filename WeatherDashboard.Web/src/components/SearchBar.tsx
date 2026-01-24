@@ -2,29 +2,18 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { useAppDispatch } from "../hooks/useRedux";
 import { setCurrentLocation } from "../features/location/locationSlice";
-import { weatherApi } from "../services/weatherApi";
 
 export function SearchBar() {
   const [query, setQuery] = useState("");
   const dispatch = useAppDispatch();
-
-  const [trigger] = weatherApi.endpoints.getWeatherByCity.useLazyQuery();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (query.trim() === "") return;
 
-    try {
-      const result = await trigger(query).unwrap();
-
-      if (result) {
-        dispatch(setCurrentLocation(result.city));
-        setQuery("");
-      }
-    } catch (error) {
-      console.error("Error fetching weather data:", error);
-    }
+    dispatch(setCurrentLocation(query.trim()));
+    setQuery("");
   }
 
   return (

@@ -26,7 +26,14 @@ export function LocationWeather({
   return (
     <div className="w-full mx-auto">
       <Card>
-        {!currentWeather ? (
+        {isLoading ? (
+          <div className="animate-pulse flex flex-col gap-4">
+            <h2 className="sr-only">Current Weather</h2>
+            <div className="h-8 bg-gray-300 rounded w-1/3"></div>
+            <div className="h-6 bg-gray-300 rounded w-1/2"></div>
+            <div className="h-20 bg-gray-300 rounded w-full"></div>
+          </div>
+        ) : !currentWeather ? (
           <div className="flex flex-col min-h-36">
             <h2 className="text-xs font-semibold mb-2 uppercase">
               Current Weather
@@ -34,13 +41,6 @@ export function LocationWeather({
             <p className="w-full text-lg text-gray-500">
               Search for a city to show the current weather
             </p>
-          </div>
-        ) : isLoading ? (
-          <div className="animate-pulse flex flex-col gap-4">
-            <h2 className="sr-only">Current Weather</h2>
-            <div className="h-8 bg-gray-300 rounded w-1/3"></div>
-            <div className="h-6 bg-gray-300 rounded w-1/2"></div>
-            <div className="h-20 bg-gray-300 rounded w-full"></div>
           </div>
         ) : (
           <div className="flex justify-between relative">
