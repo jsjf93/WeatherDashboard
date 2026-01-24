@@ -12,13 +12,13 @@ import { selectCurrentLocation } from "./features/location/locationSlice";
 
 function App() {
   const location = useAppSelector(selectCurrentLocation);
-
-  const { data: currentWeather, isFetching, isLoading } = useGetWeatherByCityQuery(
-    location!,
-    {
-      skip: !location,
-    },
-  );
+  const {
+    data: currentWeather,
+    isFetching,
+    isLoading,
+  } = useGetWeatherByCityQuery(location!, {
+    skip: !location,
+  });
 
   const {
     data: forecastWeather,

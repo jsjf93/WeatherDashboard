@@ -15,7 +15,6 @@ public sealed class GetWeatherByCityEndpoint : Endpoint<GetWeatherByCityRequest,
     public override void Configure()
     {
         Get("/weather/{city}");
-        AllowAnonymous();
 
         Summary(s =>
         {
@@ -23,6 +22,7 @@ public sealed class GetWeatherByCityEndpoint : Endpoint<GetWeatherByCityRequest,
             s.Description = "Retrieves current weather data for the specified city.";
             s.ExampleRequest = new GetWeatherByCityRequest("London");
             s.Response<GetWeatherByCityResponse>(200, "Successful retrieval of weather data");
+            s.Response(401, "Unauthorized");
             s.Response(404, "City not found");
         });
     }

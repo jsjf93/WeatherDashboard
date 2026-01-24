@@ -1,13 +1,13 @@
 import { useMsal } from "@azure/msal-react";
 import { LogIn, LogOut } from "lucide-react";
-import { scopes } from "../config/auth";
+import { scopes, apiScope } from "../config/auth";
 
 export function AuthButton() {
   const { instance, accounts } = useMsal();
 
   const handleLogin = () => {
     instance.loginRedirect({
-      scopes,
+      scopes: [...scopes, apiScope],
     });
   };
 

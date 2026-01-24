@@ -2,13 +2,31 @@ global using FluentValidation;
 
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Web;
 using WeatherDashboard.Api.Configuration;
 using WeatherDashboard.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var frontendUrl = builder.Configuration["FrontendUrl"] ?? throw new ArgumentNullException("FrontendUrl is not set in configuration");
+var tenantId = builder.Configuration["AzureAd:TenantId"] ?? throw new ArgumentNullException("AzureAd:TenantId is not set in configuration");
+var clientId = builder.Configuration["AzureAd:ClientId"] ?? throw new ArgumentNullException("AzureAd:ClientId is not set in configuration");
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(options =>
+    {
+        builder.Configuration.Bind("AzureAd", options);
+        options.Authority = $"https://login.microsoftonline.com/{tenantId}/v2.0";
+        options.Audience = clientId;
+    }, options =>
+    {
+        builder.Configuration.Bind("AzureAd", options);
+    });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -49,6 +67,9 @@ builder.Services.AddHttpClient<IAiService, AiService>();
 var app = builder.Build();
 
 app.UseCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseFastEndpoints(config =>
 {
