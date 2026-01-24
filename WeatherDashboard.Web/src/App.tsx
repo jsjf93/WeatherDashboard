@@ -9,11 +9,8 @@ import {
 } from "./services/weatherApi.ts";
 import { useAppSelector } from "./hooks/useRedux";
 import { selectCurrentLocation } from "./features/location/locationSlice";
-import { useAuthErrorHandler } from "./hooks/useAuthErrorHandler";
 
 function App() {
-  useAuthErrorHandler();
-
   const location = useAppSelector(selectCurrentLocation);
   const {
     data: currentWeather,
