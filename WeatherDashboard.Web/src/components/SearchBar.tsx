@@ -29,7 +29,7 @@ export function SearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for a city..."
-          className="w-full px-4 py-2 pl-10 bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/40"
+          className="w-full px-4 py-2 pl-10 pr-12 bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/40"
         />
         <button type="submit" className="sr-only">
           Search

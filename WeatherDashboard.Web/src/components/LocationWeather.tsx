@@ -14,14 +14,30 @@ import { useIsAuthenticated } from "@azure/msal-react";
 
 interface LocationWeatherProps {
   currentWeather?: WeatherResponse;
+  isFavourited?: boolean;
   isLoading: boolean;
+  onAddFavourite: (city: string) => void;
+  onRemoveFavourite: () => void;
 }
 
 export function LocationWeather({
   currentWeather,
+  isFavourited,
   isLoading,
+  onAddFavourite,
+  onRemoveFavourite,
 }: LocationWeatherProps) {
   const isAuthenticated = useIsAuthenticated();
+
+  function onClick() {
+    if (!currentWeather) return;
+
+    if (isFavourited) {
+      onRemoveFavourite();
+    } else {
+      onAddFavourite(currentWeather.city);
+    }
+  }
 
   return (
     <div className="w-full mx-auto">
@@ -52,11 +68,14 @@ export function LocationWeather({
               // Add a proper tooltip and maybe a lock icon at some point
               title={
                 isAuthenticated
-                  ? `Add ${currentWeather.city} to your favourites`
+                  ? isFavourited
+                    ? `Remove ${currentWeather.city} from your favourites`
+                    : `Add ${currentWeather.city} to your favourites`
                   : "Login to favourite locations"
               }
+              onClick={onClick}
             >
-              <Star size={40} />
+              <Star size={40} fill={isFavourited ? "yellow" : "none"} />
             </button>
             <div>
               <h2 className="text-4xl font-semibold mb-2">

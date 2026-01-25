@@ -33,7 +33,7 @@ public class RemoveFavouriteEndpoint(IUserContext userContext, UserFavouriteRepo
 
             await favouriteRepository.RemoveFavouriteAsync(req.Id);
 
-            await Send.OkAsync(ct);
+            await Send.NoContentAsync();
         }
         catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim"))
         {
