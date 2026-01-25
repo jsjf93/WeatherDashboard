@@ -68,7 +68,22 @@ export const weatherApi = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Favourites"],
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data: newFavourite } = await queryFulfilled;
+          dispatch(
+            weatherApi.util.updateQueryData(
+              "getFavourites",
+              undefined,
+              (draft) => {
+                draft.favourites.push(newFavourite);
+              },
+            ),
+          );
+        } catch {
+          // Cache should hopefully rollback automatically
+        }
+      },
     }),
     setDefaultFavourite: builder.mutation<void, SetDefaultFavouriteRequest>({
       query: (body) => ({
@@ -83,7 +98,22 @@ export const weatherApi = createApi({
         url: `favourites/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Favourites"],
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          weatherApi.util.updateQueryData(
+            "getFavourites",
+            undefined,
+            (draft) => {
+              draft.favourites = draft.favourites.filter((f) => f.id !== id);
+            },
+          ),
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
   }),
 });
