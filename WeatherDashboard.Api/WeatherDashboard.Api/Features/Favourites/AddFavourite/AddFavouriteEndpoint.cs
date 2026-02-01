@@ -30,7 +30,9 @@ public class AddFavouriteEndpoint(IUserContext userContext, UserFavouriteReposit
 
             if (existingFavourite != null)
             {
-                ThrowError("This city is already in your favourites");
+                AddError(r => r.City, "This city is already in your favourites", "favourite.exists");
+                await Send.ErrorsAsync(statusCode: 409, cancellation: ct);
+                return;
             }
 
             var favourite = new UserFavourite
@@ -54,9 +56,15 @@ public class AddFavouriteEndpoint(IUserContext userContext, UserFavouriteReposit
 
             await Send.CreatedAtAsync<AddFavouriteEndpoint>(null, response, cancellation: ct);
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim"))
+        catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim") || ex.Message.Contains("HttpContext"))
         {
             await Send.UnauthorizedAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error adding favourite for user {UserId}", userContext.UserId);
+            AddError("Failed to add favourite", "favourite.add_failed");
+            await Send.ErrorsAsync(statusCode: 500, cancellation: ct);
         }
     }
 }
