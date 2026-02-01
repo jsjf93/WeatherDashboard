@@ -94,7 +94,7 @@ function App() {
         <SearchBar />
 
         <Favourites
-          favouritedLocations={favouritesData?.favourites?.map((f) => f)}
+          favouritedLocations={favouritesData?.favourites}
           onClick={(location) => dispatch(setCurrentLocation(location))}
         />
 

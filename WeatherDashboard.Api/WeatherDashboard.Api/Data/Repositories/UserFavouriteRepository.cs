@@ -22,7 +22,7 @@ public class UserFavouriteRepository(WeatherDashboardDbContext dbContext)
     public async Task<UserFavourite?> GetFavouriteByUserAndCityAsync(Guid userId, string city)
     {
         return await dbContext.UserFavourites
-            .FirstOrDefaultAsync(f => f.UserId == userId && f.City == city);
+            .FirstOrDefaultAsync(f => f.UserId == userId && f.City.Equals(city, StringComparison.CurrentCultureIgnoreCase));
     }
 
     public async Task AddFavouriteAsync(UserFavourite favourite)
