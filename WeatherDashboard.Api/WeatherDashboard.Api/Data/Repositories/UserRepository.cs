@@ -9,7 +9,7 @@ public class UserRepository(WeatherDashboardDbContext dbContext)
     public async Task<User> GetOrCreateUserByEmailAsync(string email)
     {
         var normalisedEmail = email.Trim().ToLower();
-        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email.Equals(normalisedEmail, StringComparison.CurrentCultureIgnoreCase));
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == normalisedEmail);
 
         if (user == null)
         {
@@ -28,7 +28,7 @@ public class UserRepository(WeatherDashboardDbContext dbContext)
             catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex))
             {
                 dbContext.Entry(user).State = EntityState.Detached;
-                user = await dbContext.Users.FirstAsync(u => u.Email.Equals(normalisedEmail, StringComparison.CurrentCultureIgnoreCase));
+                user = await dbContext.Users.FirstAsync(u => u.Email.ToLower() == normalisedEmail);
             }
         }
 
