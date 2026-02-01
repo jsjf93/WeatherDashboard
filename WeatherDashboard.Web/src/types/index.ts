@@ -47,3 +47,29 @@ export interface ForecastItem {
 export interface ForecastSummaryResponse {
   summary: string;
 }
+
+export interface Favourite {
+  id: string;
+  city: string;
+  isDefault: boolean;
+  createdAt: string;
+}
+
+export interface GetFavouritesResponse {
+  favourites: Favourite[];
+}
+
+export interface AddFavouriteRequest {
+  city: string;
+}
+
+export interface AddFavouriteResponse {
+  id: string;
+  city: string;
+  isDefault: boolean;
+  createdAt: string;
+}
+
+export interface SetDefaultFavouriteRequest {
+  id: string;
+}

@@ -3,9 +3,13 @@ global using FluentValidation;
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using WeatherDashboard.Api.Configuration;
+using WeatherDashboard.Api.Data;
+using WeatherDashboard.Api.Data.Repositories;
+using WeatherDashboard.Api.Middleware;
 using WeatherDashboard.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +31,14 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddDbContext<WeatherDashboardDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserFavouriteRepository>();
+builder.Services.AddScoped<IUserContext, UserContext>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(options =>
 {
@@ -66,10 +78,19 @@ builder.Services.AddHttpClient<IAiService, AiService>();
 
 var app = builder.Build();
 
+// Run migrations automatically
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<WeatherDashboardDbContext>();
+    dbContext.Database.Migrate();
+}
+
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<UserInitializationMiddleware>();
 
 app.UseFastEndpoints(config =>
 {
