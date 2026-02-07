@@ -18,7 +18,6 @@ export function Favourites({
   onClick,
   isLoading,
 }: FavouritesProps) {
-  // Show skeleton loaders while loading
   if (isLoading) {
     return (
       <div className="flex flex-wrap gap-2 justify-center">
@@ -29,18 +28,10 @@ export function Favourites({
     );
   }
 
-  // Show empty state message if no favourites
   if (!favouritedLocations || favouritedLocations.length === 0) {
-    return (
-      <div className="flex flex-wrap gap-2 justify-center">
-        <p className="text-gray-500 text-sm">
-          Search for a location and favourite it for later
-        </p>
-      </div>
-    );
+    return null;
   }
 
-  // Show favourites
   return (
     <div className="flex flex-wrap gap-2 justify-center">
       {favouritedLocations.map((location) => (
