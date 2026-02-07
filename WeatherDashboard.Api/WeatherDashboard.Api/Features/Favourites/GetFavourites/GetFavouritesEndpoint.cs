@@ -25,16 +25,7 @@ public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteReposi
         {
             var favourites = await favouriteRepository.GetUserFavouritesAsync(userContext.UserId);
 
-            var response = new GetFavouritesResponse
-            {
-                Favourites = favourites.Select(f => new FavouriteDto
-                {
-                    Id = f.Id,
-                    City = f.City,
-                    IsDefault = f.IsDefault,
-                    CreatedAt = f.CreatedAt
-                }).ToList()
-            };
+            var response = new GetFavouritesResponse(favourites.Select(f => new FavouriteDto(f.Id, f.City, f.CreatedAt)));
 
             await Send.OkAsync(response, ct);
         }

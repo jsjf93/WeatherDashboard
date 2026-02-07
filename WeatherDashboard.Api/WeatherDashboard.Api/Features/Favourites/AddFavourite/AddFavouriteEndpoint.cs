@@ -40,7 +40,6 @@ public class AddFavouriteEndpoint(IUserContext userContext, UserFavouriteReposit
                 Id = Guid.NewGuid(),
                 UserId = userContext.UserId,
                 City = req.City,
-                IsDefault = false,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -50,7 +49,6 @@ public class AddFavouriteEndpoint(IUserContext userContext, UserFavouriteReposit
             {
                 Id = favourite.Id,
                 City = favourite.City,
-                IsDefault = favourite.IsDefault,
                 CreatedAt = favourite.CreatedAt
             };
 
