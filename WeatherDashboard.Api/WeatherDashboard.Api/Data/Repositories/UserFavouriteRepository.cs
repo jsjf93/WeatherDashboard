@@ -9,8 +9,7 @@ public class UserFavouriteRepository(WeatherDashboardDbContext dbContext)
     {
         return await dbContext.UserFavourites
             .Where(f => f.UserId == userId)
-            .OrderByDescending(f => f.IsDefault)
-            .ThenByDescending(f => f.CreatedAt)
+            .OrderBy(f => f.City)
             .ToListAsync();
     }
 
@@ -47,18 +46,4 @@ public class UserFavouriteRepository(WeatherDashboardDbContext dbContext)
         }
     }
 
-    public async Task RemoveAllUserDefaultFlagsAsync(Guid userId)
-    {
-        var defaults = await dbContext.UserFavourites
-            .Where(f => f.UserId == userId && f.IsDefault)
-            .ToListAsync();
-
-        foreach (var favourite in defaults)
-        {
-            favourite.IsDefault = false;
-        }
-
-        dbContext.UserFavourites.UpdateRange(defaults);
-        await dbContext.SaveChangesAsync();
-    }
 }
