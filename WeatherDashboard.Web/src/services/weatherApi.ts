@@ -8,7 +8,6 @@ import type {
   GetFavouritesResponse,
   AddFavouriteRequest,
   AddFavouriteResponse,
-  SetDefaultFavouriteRequest,
 } from "../types";
 import { apiScope } from "../config/auth";
 
@@ -85,14 +84,6 @@ export const weatherApi = createApi({
         }
       },
     }),
-    setDefaultFavourite: builder.mutation<void, SetDefaultFavouriteRequest>({
-      query: (body) => ({
-        url: `favourites/${body.id}/set-default`,
-        method: "PUT",
-        body,
-      }),
-      invalidatesTags: ["Favourites"],
-    }),
     removeFavourite: builder.mutation<void, string>({
       query: (id) => ({
         url: `favourites/${id}`,
@@ -124,6 +115,5 @@ export const {
   useGetForecastSummaryQuery,
   useGetFavouritesQuery,
   useAddFavouriteMutation,
-  useSetDefaultFavouriteMutation,
   useRemoveFavouriteMutation,
 } = weatherApi;

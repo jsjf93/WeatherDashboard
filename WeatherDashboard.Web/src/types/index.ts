@@ -51,7 +51,6 @@ export interface ForecastSummaryResponse {
 export interface Favourite {
   id: string;
   city: string;
-  isDefault: boolean;
   createdAt: string;
 }
 
@@ -66,10 +65,5 @@ export interface AddFavouriteRequest {
 export interface AddFavouriteResponse {
   id: string;
   city: string;
-  isDefault: boolean;
   createdAt: string;
-}
-
-export interface SetDefaultFavouriteRequest {
-  id: string;
 }
