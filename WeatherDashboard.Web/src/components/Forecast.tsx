@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 
 interface ForecastProps {
   forecastData?: ForecastResponse["dailySummaries"];
+  isLoading?: boolean;
 }
 
 const getWeatherIcon = (condition: string) => {
@@ -27,7 +28,7 @@ const getDayLabel = (dateStr: string, index: number): string => {
   return dayjs(dateStr).format("dddd");
 };
 
-export function Forecast({ forecastData }: ForecastProps) {
+export function Forecast({ forecastData, isLoading }: ForecastProps) {
   const displayData = forecastData?.slice(0, 3) || [];
 
   return (
@@ -35,25 +36,41 @@ export function Forecast({ forecastData }: ForecastProps) {
       <Card>
         <div className="flex flex-col gap-3 md:min-h-36">
           <h2 className="text-xs font-semibold uppercase">Forecast</h2>
-          {displayData.map((forecast: DailyForecast, index: number) => {
-            const Icon = getWeatherIcon(forecast.condition);
-            return (
+          {isLoading ? (
+            // Skeleton loaders for forecast items
+            Array.from({ length: 3 }).map((_, index) => (
               <div
-                key={forecast.date}
-                className="flex items-center whitespace-nowrap justify-between"
+                key={index}
+                className="flex items-center justify-between animate-pulse"
               >
-                <span className="w-20">
-                  {getDayLabel(forecast.date, index)}
-                </span>
+                <div className="h-4 bg-gray-300 rounded w-20"></div>
                 <div className="flex items-center gap-2">
-                  <Icon size={24} className="shrink-0" />
-                  <span className="font-semibold w-12">
-                    {Math.round(forecast.temp)}°C
-                  </span>
+                  <div className="h-6 w-6 bg-gray-300 rounded"></div>
+                  <div className="h-4 bg-gray-300 rounded w-12"></div>
                 </div>
               </div>
-            );
-          })}
+            ))
+          ) : (
+            displayData.map((forecast: DailyForecast, index: number) => {
+              const Icon = getWeatherIcon(forecast.condition);
+              return (
+                <div
+                  key={forecast.date}
+                  className="flex items-center whitespace-nowrap justify-between"
+                >
+                  <span className="w-20">
+                    {getDayLabel(forecast.date, index)}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <Icon size={24} className="shrink-0" />
+                    <span className="font-semibold w-12">
+                      {Math.round(forecast.temp)}°C
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       </Card>
     </div>
