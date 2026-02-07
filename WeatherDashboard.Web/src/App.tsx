@@ -91,7 +91,7 @@ function App() {
     >
       <Header />
 
-      <main className="flex flex-col gap-6 md:gap-8">
+      <main className="flex flex-col gap-4 md:gap-5">
         <SearchBar />
 
         <Favourites
