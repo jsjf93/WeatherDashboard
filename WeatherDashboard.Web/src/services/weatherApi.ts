@@ -70,12 +70,21 @@ export const weatherApi = createApi({
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data: newFavourite } = await queryFulfilled;
+
           dispatch(
             weatherApi.util.updateQueryData(
               "getFavourites",
               undefined,
               (draft) => {
-                draft.favourites.push(newFavourite);
+                const index = draft.favourites.findIndex(
+                  (f) => f.city.localeCompare(newFavourite.city) > 0,
+                );
+
+                if (index === -1) {
+                  draft.favourites.push(newFavourite);
+                } else {
+                  draft.favourites.splice(index, 0, newFavourite);
+                }
               },
             ),
           );
