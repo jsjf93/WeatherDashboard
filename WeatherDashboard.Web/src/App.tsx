@@ -38,9 +38,10 @@ function App() {
     skip: !location,
   });
 
-  const { data: favouritesData } = useGetFavouritesQuery(undefined, {
-    skip: !isAuthenticated,
-  });
+  const { data: favouritesData, isLoading: isFavouritesLoading } =
+    useGetFavouritesQuery(undefined, {
+      skip: !isAuthenticated,
+    });
   const [addFavourite] = useAddFavouriteMutation();
   const [removeFavourite] = useRemoveFavouriteMutation();
 
@@ -90,12 +91,13 @@ function App() {
     >
       <Header />
 
-      <main className="flex flex-col gap-6 md:gap-8">
+      <main className="flex flex-col gap-4 md:gap-5">
         <SearchBar />
 
         <Favourites
           favouritedLocations={favouritesData?.favourites}
           onClick={(location) => dispatch(setCurrentLocation(location))}
+          isLoading={isFavouritesLoading && isAuthenticated}
         />
 
         <div className="flex flex-col gap-2 md:gap-4 w-full max-w-3xl mx-auto">
@@ -114,7 +116,10 @@ function App() {
               city={location ?? undefined}
               isForecastReady={isForecastSuccess && !isForecastFetching}
             />
-            <Forecast forecastData={forecastWeather?.dailySummaries} />
+            <Forecast
+              forecastData={forecastWeather?.dailySummaries}
+              isLoading={isForecastFetching && !!location}
+            />
           </div>
         </div>
       </main>
