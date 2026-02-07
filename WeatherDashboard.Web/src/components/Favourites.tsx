@@ -8,7 +8,7 @@ type FavouritesProps = {
 
 export function Favourites({ favouritedLocations, onClick }: FavouritesProps) {
   return (
-    <div className="flex gap-2 justify-center">
+    <div className="flex flex-wrap gap-2 justify-center">
       {favouritedLocations?.map((location) => (
         <Tag
           key={location.id}
