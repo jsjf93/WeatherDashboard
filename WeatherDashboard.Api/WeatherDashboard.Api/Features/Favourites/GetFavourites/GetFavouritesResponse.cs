@@ -1,5 +1,5 @@
 namespace WeatherDashboard.Api.Features.Favourites.GetFavourites;
 
-public record GetFavouritesResponse(IEnumerable<FavouriteDto> Favourites);
+public sealed record GetFavouritesResponse(IEnumerable<FavouriteDto> Favourites);
 
-public record FavouriteDto(Guid Id, string City, DateTime CreatedAt);
+public sealed record FavouriteDto(Guid Id, string City, DateTime CreatedAt);

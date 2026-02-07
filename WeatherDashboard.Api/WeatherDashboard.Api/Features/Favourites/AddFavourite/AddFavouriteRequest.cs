@@ -1,5 +1,5 @@
 namespace WeatherDashboard.Api.Features.Favourites.AddFavourite;
 
-public record AddFavouriteRequest(string City);
+public sealed record AddFavouriteRequest(string City);
 
-public record AddFavouriteResponse(Guid Id, string City, DateTime CreatedAt);
+public sealed record AddFavouriteResponse(Guid Id, string City, DateTime CreatedAt);

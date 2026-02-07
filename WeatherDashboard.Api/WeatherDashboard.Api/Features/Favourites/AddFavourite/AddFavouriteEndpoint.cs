@@ -45,12 +45,7 @@ public class AddFavouriteEndpoint(IUserContext userContext, UserFavouriteReposit
 
             await favouriteRepository.AddFavouriteAsync(favourite);
 
-            var response = new AddFavouriteResponse
-            {
-                Id = favourite.Id,
-                City = favourite.City,
-                CreatedAt = favourite.CreatedAt
-            };
+            var response = new AddFavouriteResponse(favourite.Id, favourite.City, favourite.CreatedAt);
 
             await Send.CreatedAtAsync<AddFavouriteEndpoint>(null, response, cancellation: ct);
         }

@@ -5,16 +5,12 @@ namespace WeatherDashboard.Api.Features.Weather.GetWeatherByCity;
 
 public sealed class WeatherMapper : Mapper<GetWeatherByCityRequest, GetWeatherByCityResponse, WeatherResponse>
 {
-    public override GetWeatherByCityResponse FromEntity(WeatherResponse e)
-    {
-        return new GetWeatherByCityResponse
-        {
-            City = e.Name,
-            Temperature = e.Main.Temp,
-            Condition = e.Weather.FirstOrDefault()?.Main ?? "Unknown",
-            Description = e.Weather.FirstOrDefault()?.Description ?? "No description",
-            Wind = e.Wind.Speed,
-            Humidity = e.Main.Humidity
-        };
-    }
+    public override GetWeatherByCityResponse FromEntity(WeatherResponse weatherResponse) => new (
+        weatherResponse.Name,
+        weatherResponse.Main.Temp,
+        weatherResponse.Weather.FirstOrDefault()?.Main ?? "Unknown",
+        weatherResponse.Weather.FirstOrDefault()?.Description ?? "No description",
+        weatherResponse.Wind.Speed,
+        weatherResponse.Main.Humidity
+    );
 }
