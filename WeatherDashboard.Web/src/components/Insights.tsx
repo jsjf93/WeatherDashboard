@@ -6,9 +6,14 @@ import { useGetForecastSummaryQuery } from "../services/weatherApi";
 interface InsightsProps {
   city?: string;
   isForecastReady?: boolean;
+  showLoading?: boolean;
 }
 
-export function Insights({ city, isForecastReady }: InsightsProps) {
+export function Insights({
+  city,
+  isForecastReady,
+  showLoading,
+}: InsightsProps) {
   const [showFullInsights, setShowFullInsights] = useState(false);
 
   const {
@@ -29,18 +34,14 @@ export function Insights({ city, isForecastReady }: InsightsProps) {
             </span>
           </h2>
 
-          {!city ? (
+          {showLoading && <InsightsSkeleton />}
+
+          {!showLoading && !city ? (
             <p className="w-full text-lg text-gray-500">
               Search for a city to see AI-powered weather insights.
             </p>
           ) : isFetching ? (
-            <div className="w-full text-lg">
-              <div className="animate-pulse space-y-2">
-                <div className="h-4 bg-gray-300 rounded w-full"></div>
-                <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-                <div className="h-4 bg-gray-300 rounded w-4/6"></div>
-              </div>
-            </div>
+            <InsightsSkeleton />
           ) : error ? (
             <p className="w-full text-lg text-red-500">
               Unable to generate insights. Please try again later.
@@ -64,6 +65,18 @@ export function Insights({ city, isForecastReady }: InsightsProps) {
           ) : null}
         </div>
       </Card>
+    </div>
+  );
+}
+
+function InsightsSkeleton() {
+  return (
+    <div className="w-full text-lg">
+      <div className="animate-pulse space-y-2">
+        <div className="h-4 bg-gray-300 rounded w-full"></div>
+        <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+        <div className="h-4 bg-gray-300 rounded w-4/6"></div>
+      </div>
     </div>
   );
 }

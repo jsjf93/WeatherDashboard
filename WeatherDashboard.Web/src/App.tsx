@@ -115,6 +115,7 @@ function App() {
             <Insights
               city={location ?? undefined}
               isForecastReady={isForecastSuccess && !isForecastFetching}
+              showLoading={isFetching || isLoading}
             />
             <Forecast
               forecastData={forecastWeather?.dailySummaries}
