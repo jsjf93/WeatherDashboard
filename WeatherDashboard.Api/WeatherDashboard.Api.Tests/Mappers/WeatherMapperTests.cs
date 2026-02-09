@@ -18,7 +18,9 @@ public class WeatherMapperTests
             Main = new MainData
             {
                 Temp = 15.5,
-                Humidity = 75
+                Humidity = 75,
+                TempMin = 10.0,
+                TempMax = 20.0
             },
             Wind = new Wind
             {
@@ -45,6 +47,8 @@ public class WeatherMapperTests
         result.Wind.Should().Be(5.5);
         result.Condition.Should().Be("Clouds");
         result.Description.Should().Be("scattered clouds");
+        result.MinTemperature.Should().Be(10.0);
+        result.MaxTemperature.Should().Be(20.0);
     }
 
     [Fact]
@@ -57,7 +61,9 @@ public class WeatherMapperTests
             Main = new MainData
             {
                 Temp = 20.0,
-                Humidity = 60
+                Humidity = 60,
+                TempMin = 15.0,
+                TempMax = 25.0
             },
             Wind = new Wind
             {
@@ -84,7 +90,9 @@ public class WeatherMapperTests
             Main = new MainData
             {
                 Temp = 18.0,
-                Humidity = 80
+                Humidity = 80,
+                TempMin = 15.0,
+                TempMax = 25.0
             },
             Wind = new Wind
             {
@@ -123,7 +131,9 @@ public class WeatherMapperTests
             Main = new MainData
             {
                 Temp = 0,
-                Humidity = 0
+                Humidity = 0,
+                TempMin = 0,
+                TempMax = 0
             },
             Wind = new Wind
             {
@@ -146,6 +156,8 @@ public class WeatherMapperTests
         result.Temperature.Should().Be(0);
         result.Wind.Should().Be(0);
         result.Humidity.Should().Be(0);
+        result.MinTemperature.Should().Be(0);
+        result.MaxTemperature.Should().Be(0);
     }
 
     [Fact]
@@ -158,7 +170,9 @@ public class WeatherMapperTests
             Main = new MainData
             {
                 Temp = -10.5,
-                Humidity = 85
+                Humidity = 85,
+                TempMin = -15.0,
+                TempMax = -5.0
             },
             Wind = new Wind
             {
@@ -179,5 +193,7 @@ public class WeatherMapperTests
 
         // Assert
         result.Temperature.Should().Be(-10.5);
+        result.MinTemperature.Should().Be(-15.0);
+        result.MaxTemperature.Should().Be(-5.0);
     }
 }

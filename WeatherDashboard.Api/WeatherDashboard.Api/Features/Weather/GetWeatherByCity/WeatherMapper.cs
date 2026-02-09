@@ -15,7 +15,9 @@ public sealed class WeatherMapper : Mapper<GetWeatherByCityRequest, GetWeatherBy
             firstWeather?.Main ?? "Unknown",
             firstWeather?.Description ?? "No description",
             weatherResponse.Wind.Speed,
-            weatherResponse.Main.Humidity
+            weatherResponse.Main.Humidity,
+            weatherResponse.Main.TempMin,
+            weatherResponse.Main.TempMax
         );
     }
 }

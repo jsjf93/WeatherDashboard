@@ -6,6 +6,8 @@ import {
   Cloud,
   CloudRain,
   CloudSnow,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
@@ -65,7 +67,6 @@ export function LocationWeather({
               className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
               aria-label={`Add ${currentWeather.city} to your favourites`}
               disabled={!isAuthenticated}
-              // Add a proper tooltip and maybe a lock icon at some point
               title={
                 isAuthenticated
                   ? isFavourited
@@ -83,7 +84,7 @@ export function LocationWeather({
               </h2>
               <p className="text-lg mb-4">{currentWeather.description}</p>
               <div className="flex gap-4">
-                <div className="flex flex-col md:flex-row gap-2">
+                <div className="flex flex-col md:flex-row gap-2 flex-wrap">
                   <Tag
                     label={
                       <div className="flex gap-2 items-center font-bold">
@@ -94,7 +95,29 @@ export function LocationWeather({
                   <Tag
                     label={
                       <div className="flex gap-2 items-center font-bold">
-                        <Droplet /> {currentWeather.humidity}%
+                        <span className="text-blue-400">
+                          <Droplet />
+                        </span>{" "}
+                        {currentWeather.humidity}%
+                      </div>
+                    }
+                  />
+                  <Tag
+                    label={
+                      <div className="flex gap-2 items-center font-bold">
+                        <span className="flex gap-2 items-center">
+                          <span className="text-blue-400">
+                            <ArrowDown />
+                          </span>{" "}
+                          {Math.round(currentWeather.minTemperature)}°C
+                        </span>
+                        <span className="flex gap-2 items-center">
+                          <span className="text-red-400">
+                            <ArrowUp />
+                          </span>{" "}
+                          {Math.round(currentWeather.maxTemperature)}
+                          °C
+                        </span>
                       </div>
                     }
                   />

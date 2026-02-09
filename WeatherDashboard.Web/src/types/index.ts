@@ -5,6 +5,8 @@ export interface WeatherResponse {
   wind: number;
   condition: "Clear" | "Clouds" | "Rain" | "Snow";
   description: string;
+  minTemperature: number;
+  maxTemperature: number;
 }
 
 export interface ForecastResponse {

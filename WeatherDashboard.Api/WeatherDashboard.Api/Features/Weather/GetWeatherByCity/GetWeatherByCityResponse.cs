@@ -6,5 +6,7 @@ public sealed record GetWeatherByCityResponse(
     string Condition,
     string Description,
     double Wind,
-    int Humidity
+    int Humidity,
+    double MinTemperature,
+    double MaxTemperature
 );
