@@ -70,7 +70,7 @@ export interface AddFavouriteResponse {
 
 export interface FastEndpointsError {
   errors: {
-    [fieldName: string]: string[]; // need to look up the structure of this
+    [fieldName: string]: string[];
   };
   statusCode: number;
 }

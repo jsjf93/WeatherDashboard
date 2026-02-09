@@ -10,7 +10,7 @@ export function ToastContainer() {
   const toasts = useAppSelector(selectToasts);
   const dispatch = useAppDispatch();
 
-  const visibleToasts = toasts.slice(0, MAX_TOASTS);
+  const visibleToasts = toasts.slice(-MAX_TOASTS);
 
   useEffect(() => {
     const timers = visibleToasts.map((toast) => {

@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../services/store";
 import type { Toast, ToastVariant } from "../../types";
 
@@ -19,7 +19,7 @@ export const toastSlice = createSlice({
       action: PayloadAction<{ message: string; variant: ToastVariant }>,
     ) => {
       const newToast: Toast = {
-        id: crypto.randomUUID(),
+        id: nanoid(),
         message: action.payload.message,
         variant: action.payload.variant,
         timestamp: Date.now(),
