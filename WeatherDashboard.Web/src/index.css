@@ -76,4 +76,16 @@
   .text-shadow-subtle {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   }
+
+  /* Fix browser autocomplete white background on search input */
+  #search-input:-webkit-autofill,
+  #search-input:-webkit-autofill:hover,
+  #search-input:-webkit-autofill:focus,
+  #search-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4) inset;
+    -webkit-text-fill-color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+    caret-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
