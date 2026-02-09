@@ -84,7 +84,7 @@ export function LocationWeather({
               </h2>
               <p className="text-lg mb-4">{currentWeather.description}</p>
               <div className="flex gap-4">
-                <div className="flex flex-col md:flex-row gap-2 flex-wrap">
+                <div className="flex flex-col md:flex-row gap-2 flex-wrap items-start">
                   <Tag
                     label={
                       <div className="flex gap-2 items-center font-bold">
@@ -105,13 +105,13 @@ export function LocationWeather({
                   <Tag
                     label={
                       <div className="flex gap-2 items-center font-bold">
-                        <span className="flex gap-2 items-center">
+                        <span className="flex gap-1 items-center">
                           <span className="text-blue-400">
                             <ArrowDown />
                           </span>{" "}
                           {Math.round(currentWeather.minTemperature)}°C
                         </span>
-                        <span className="flex gap-2 items-center">
+                        <span className="flex gap-1 items-center">
                           <span className="text-red-400">
                             <ArrowUp />
                           </span>{" "}
@@ -125,7 +125,7 @@ export function LocationWeather({
               </div>
             </div>
 
-            <div className="pr-10 text-6xl font-bold flex flex-col items-center justify-center gap-2">
+            <div className="pr-10 text-5xl sm:text-6xl font-bold flex flex-col items-center justify-center gap-1 sm:gap-2">
               {currentWeather.condition === "Clear" && <Sun size={100} />}
               {currentWeather.condition === "Clouds" && <Cloud size={100} />}
               {currentWeather.condition === "Rain" && <CloudRain size={100} />}
