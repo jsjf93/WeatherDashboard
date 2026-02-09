@@ -67,3 +67,20 @@ export interface AddFavouriteResponse {
   city: string;
   createdAt: string;
 }
+
+export interface FastEndpointsError {
+  errors: {
+    [fieldName: string]: string[];
+  };
+  statusCode: number;
+}
+
+// Toast notification types
+export type ToastVariant = "error" | "success" | "info" | "warning";
+
+export interface Toast {
+  id: string;
+  message: string;
+  variant: ToastVariant;
+  timestamp: number;
+}
