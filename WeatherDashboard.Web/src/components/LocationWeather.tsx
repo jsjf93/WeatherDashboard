@@ -59,7 +59,7 @@ export function LocationWeather({
             </p>
           </div>
         ) : (
-          <div className="flex justify-between relative">
+          <div className="flex items-center justify-between relative">
             <h2 className="sr-only">Current Weather</h2>
             <button
               className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
@@ -83,7 +83,7 @@ export function LocationWeather({
               </h2>
               <p className="text-lg mb-4">{currentWeather.description}</p>
               <div className="flex gap-4">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col md:flex-row gap-2">
                   <Tag
                     label={
                       <div className="flex gap-2 items-center font-bold">
