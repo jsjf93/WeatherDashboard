@@ -21,6 +21,7 @@ public sealed class GetForecastSummaryEndpoint : Endpoint<GetForecastSummaryRequ
     public override void Configure()
     {
         Get("/forecast/{city}/summary");
+        AllowAnonymous();
 
         Summary(s =>
         {

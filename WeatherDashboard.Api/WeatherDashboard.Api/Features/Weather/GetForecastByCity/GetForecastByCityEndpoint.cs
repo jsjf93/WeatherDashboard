@@ -15,6 +15,7 @@ public sealed class GetForecastByCityEndpoint : Endpoint<GetForecastByCityReques
     public override void Configure()
     {
         Get("/forecast/{city}");
+        AllowAnonymous();
 
         Summary(s =>
         {
@@ -22,7 +23,6 @@ public sealed class GetForecastByCityEndpoint : Endpoint<GetForecastByCityReques
             s.Description = "Retrieves a 3-day weather forecast with daily summaries and full 3-hour interval data for the specified city.";
             s.ExampleRequest = new GetForecastByCityRequest("London");
             s.Response<GetForecastByCityResponse>(200, "Successful retrieval of forecast data");
-            s.Response(401, "Unauthorized");
             s.Response(404, "City not found");
         });
     }

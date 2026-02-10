@@ -4,23 +4,33 @@ using WeatherDashboard.Api.Services;
 
 namespace WeatherDashboard.Api.Features.Favourites.GetFavourites;
 
-public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteRepository favouriteRepository)
+public class GetFavouritesEndpoint(IHttpContextAccessor httpContextAccessor, IUserContext userContext, UserFavouriteRepository favouriteRepository)
     : EndpointWithoutRequest<GetFavouritesResponse>
 {
+    private static readonly GetFavouritesResponse EmptyResponse = new(Array.Empty<FavouriteDto>());
+
     public override void Configure()
     {
         Get("/favourites");
+        AllowAnonymous();
         Summary(s =>
         {
             s.Summary = "Get user's favourite cities";
-            s.Description = "Retrieves all favourite cities for the authenticated user";
+            s.Description = "Retrieves all favourite cities for the authenticated user. Returns an empty list if user is not authenticated.";
             s.Responses[200] = "Successfully retrieved favourites";
-            s.Responses[401] = "Unauthorized";
         });
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
+        // Check if user is authenticated before attempting to retrieve favourites
+        var httpContext = httpContextAccessor.HttpContext;
+        if (httpContext?.User?.Identity?.IsAuthenticated != true)
+        {
+            await Send.OkAsync(EmptyResponse, ct);
+            return;
+        }
+
         try
         {
             var favourites = await favouriteRepository.GetUserFavouritesAsync(userContext.UserId);
@@ -29,9 +39,12 @@ public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteReposi
 
             await Send.OkAsync(response, ct);
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim"))
+        catch (InvalidOperationException ex)
         {
-            await Send.UnauthorizedAsync(ct);
+            // Log the exception and return empty list for any user context issues
+            // This typically happens when there's a problem with claims or user initialization
+            Logger.LogWarning(ex, "Failed to retrieve user context or favourites. Returning empty list.");
+            await Send.OkAsync(EmptyResponse, ct);
         }
     }
 }

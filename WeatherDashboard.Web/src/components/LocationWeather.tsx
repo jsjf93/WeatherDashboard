@@ -8,6 +8,7 @@ import {
   CloudSnow,
   ArrowUp,
   ArrowDown,
+  Lock,
 } from "lucide-react";
 import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
@@ -72,11 +73,16 @@ export function LocationWeather({
                   ? isFavourited
                     ? `Remove ${currentWeather.city} from your favourites`
                     : `Add ${currentWeather.city} to your favourites`
-                  : "Login to favourite locations"
+                  : "You must be signed in to favourite a location"
               }
               onClick={onClick}
             >
-              <Star size={40} fill={isFavourited ? "yellow" : "none"} />
+              <div className="relative">
+                <Star size={40} fill={isFavourited ? "yellow" : "none"} />
+                {!isAuthenticated && (
+                  <Lock size={20} className="absolute -top-2 -right-2 p-0.5" />
+                )}
+              </div>
             </button>
             <div>
               <h2 className="text-4xl font-semibold mb-2">

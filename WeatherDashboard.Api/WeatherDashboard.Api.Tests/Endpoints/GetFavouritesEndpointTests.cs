@@ -1,5 +1,6 @@
 using FastEndpoints;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using WeatherDashboard.Api.Data.Repositories;
 using WeatherDashboard.Api.Features.Favourites.GetFavourites;
@@ -13,11 +14,13 @@ public class GetFavouritesEndpointTests
     public void Endpoint_CanBeInstantiatedWithRequiredDependencies()
     {
         // Arrange
+        var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         var userContextMock = new Mock<IUserContext>();
         var repositoryMock = new Mock<UserFavouriteRepository>(MockBehavior.Strict, null!);
         
         // Act
         var endpoint = new GetFavouritesEndpoint(
+            httpContextAccessorMock.Object,
             userContextMock.Object,
             repositoryMock.Object);
 
