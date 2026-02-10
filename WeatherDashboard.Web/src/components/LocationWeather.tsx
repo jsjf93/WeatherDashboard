@@ -6,6 +6,7 @@ import {
   Cloud,
   CloudRain,
   CloudSnow,
+  Moon,
   ArrowUp,
   ArrowDown,
   Lock,
@@ -14,6 +15,7 @@ import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
 import { Tag } from "./Tag.tsx";
 import { useIsAuthenticated } from "@azure/msal-react";
+import { useCurrentTime } from "../hooks/useCurrentTime";
 
 interface LocationWeatherProps {
   currentWeather?: WeatherResponse;
@@ -31,6 +33,7 @@ export function LocationWeather({
   onRemoveFavourite,
 }: LocationWeatherProps) {
   const isAuthenticated = useIsAuthenticated();
+  const currentTime = useCurrentTime();
 
   function onClick() {
     if (!currentWeather) return;
@@ -41,6 +44,13 @@ export function LocationWeather({
       onAddFavourite(currentWeather.city);
     }
   }
+
+  const isNight = (() => {
+    if (!currentWeather) return false;
+    
+    // All values are Unix timestamps in UTC, so we can compare directly
+    return currentTime < currentWeather.sunrise || currentTime >= currentWeather.sunset;
+  })();
 
   return (
     <div className="w-full mx-auto">
@@ -132,7 +142,8 @@ export function LocationWeather({
             </div>
 
             <div className="pr-10 text-5xl sm:text-6xl font-bold flex flex-col items-center justify-center gap-1 sm:gap-2">
-              {currentWeather.condition === "Clear" && <Sun size={100} />}
+              {currentWeather.condition === "Clear" && isNight && <Moon size={100} />}
+              {currentWeather.condition === "Clear" && !isNight && <Sun size={100} />}
               {currentWeather.condition === "Clouds" && <Cloud size={100} />}
               {currentWeather.condition === "Rain" && <CloudRain size={100} />}
               {currentWeather.condition === "Snow" && <CloudSnow size={100} />}

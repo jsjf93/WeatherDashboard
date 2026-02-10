@@ -7,6 +7,9 @@ export interface WeatherResponse {
   description: string;
   minTemperature: number;
   maxTemperature: number;
+  sunrise: number;
+  sunset: number;
+  timezone: number;
 }
 
 export interface ForecastResponse {

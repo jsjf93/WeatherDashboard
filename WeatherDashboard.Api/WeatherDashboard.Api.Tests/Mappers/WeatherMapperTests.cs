@@ -33,7 +33,13 @@ public class WeatherMapperTests
                     Main = "Clouds",
                     Description = "scattered clouds"
                 }
-            }
+            },
+            Sys = new SystemData
+            {
+                Sunrise = 1623045600,
+                Sunset = 1623096000
+            },
+            Timezone = 3600
         };
 
         // Act
@@ -49,6 +55,9 @@ public class WeatherMapperTests
         result.Description.Should().Be("scattered clouds");
         result.MinTemperature.Should().Be(10.0);
         result.MaxTemperature.Should().Be(20.0);
+        result.Sunrise.Should().Be(1623045600);
+        result.Sunset.Should().Be(1623096000);
+        result.Timezone.Should().Be(3600);
     }
 
     [Fact]
@@ -69,7 +78,13 @@ public class WeatherMapperTests
             {
                 Speed = 3.5
             },
-            Weather = new List<WeatherData>()
+            Weather = new List<WeatherData>(),
+            Sys = new SystemData
+            {
+                Sunrise = 1623045600,
+                Sunset = 1623096000
+            },
+            Timezone = 7200
         };
 
         // Act
@@ -110,7 +125,13 @@ public class WeatherMapperTests
                     Main = "Clouds",
                     Description = "overcast clouds"
                 }
-            }
+            },
+            Sys = new SystemData
+            {
+                Sunrise = 1623045600,
+                Sunset = 1623096000
+            },
+            Timezone = 32400
         };
 
         // Act
@@ -146,7 +167,13 @@ public class WeatherMapperTests
                     Main = "Clear",
                     Description = "clear sky"
                 }
-            }
+            },
+            Sys = new SystemData
+            {
+                Sunrise = 0,
+                Sunset = 0
+            },
+            Timezone = 0
         };
 
         // Act
@@ -185,7 +212,13 @@ public class WeatherMapperTests
                     Main = "Snow",
                     Description = "heavy snow"
                 }
-            }
+            },
+            Sys = new SystemData
+            {
+                Sunrise = 1623045600,
+                Sunset = 1623096000
+            },
+            Timezone = 10800
         };
 
         // Act

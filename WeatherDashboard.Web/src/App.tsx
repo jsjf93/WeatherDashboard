@@ -18,11 +18,14 @@ import {
   setCurrentLocation,
 } from "./features/location/locationSlice";
 import { useIsAuthenticated } from "@azure/msal-react";
+import { useCurrentTime } from "./hooks/useCurrentTime";
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const location = useAppSelector(selectCurrentLocation);
   const dispatch = useAppDispatch();
+  const currentTime = useCurrentTime();
+  
   const {
     data: currentWeather,
     isFetching,
@@ -82,6 +85,15 @@ function App() {
 
   const getThemeColors = () => {
     if (!currentWeather) return "theme-Clouds";
+    
+    // Determine if it's nighttime based on sunrise and sunset
+    // All values are Unix timestamps in UTC, so we can compare directly
+    const isNight = currentTime < currentWeather.sunrise || currentTime >= currentWeather.sunset;
+    
+    if (isNight) {
+      return "theme-night";
+    }
+    
     return `theme-${currentWeather.condition}`;
   };
 
