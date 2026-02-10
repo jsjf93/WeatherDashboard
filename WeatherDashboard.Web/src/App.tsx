@@ -18,11 +18,14 @@ import {
   setCurrentLocation,
 } from "./features/location/locationSlice";
 import { useIsAuthenticated } from "@azure/msal-react";
+import { useState, useEffect } from "react";
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const location = useAppSelector(selectCurrentLocation);
   const dispatch = useAppDispatch();
+  const [currentTime, setCurrentTime] = useState(() => Math.floor(Date.now() / 1000));
+  
   const {
     data: currentWeather,
     isFetching,
@@ -45,6 +48,15 @@ function App() {
     });
   const [addFavourite] = useAddFavouriteMutation();
   const [removeFavourite] = useRemoveFavouriteMutation();
+
+  // Update current time every minute
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(Math.floor(Date.now() / 1000));
+    };
+    const interval = setInterval(updateTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleAddFavourite = async (location: string) => {
     if (!location) return;
@@ -82,6 +94,19 @@ function App() {
 
   const getThemeColors = () => {
     if (!currentWeather) return "theme-Clouds";
+    
+    // Determine if it's nighttime based on sunrise and sunset
+    const localTime = currentTime + currentWeather.timezone;
+    const sunrise = currentWeather.sunrise;
+    const sunset = currentWeather.sunset;
+    
+    // Check if current local time is outside sunrise-sunset window
+    const isNight = localTime < sunrise || localTime >= sunset;
+    
+    if (isNight) {
+      return "theme-night";
+    }
+    
     return `theme-${currentWeather.condition}`;
   };
 

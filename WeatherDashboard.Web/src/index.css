@@ -26,6 +26,10 @@
     );
     --accent-color: hsl(190 100% 20%);
   }
+  .theme-night {
+    --bg-gradient: linear-gradient(135deg, hsl(230 40% 12%), hsl(240 50% 5%));
+    --accent-color: hsl(260 100% 80%);
+  }
 }
 
 @theme inline {

@@ -17,7 +17,10 @@ public sealed class WeatherMapper : Mapper<GetWeatherByCityRequest, GetWeatherBy
             weatherResponse.Wind.Speed,
             weatherResponse.Main.Humidity,
             weatherResponse.Main.TempMin,
-            weatherResponse.Main.TempMax
+            weatherResponse.Main.TempMax,
+            weatherResponse.Sys.Sunrise,
+            weatherResponse.Sys.Sunset,
+            weatherResponse.Timezone
         );
     }
 }

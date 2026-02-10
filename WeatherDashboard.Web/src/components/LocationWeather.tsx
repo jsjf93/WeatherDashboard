@@ -6,10 +6,12 @@ import {
   Cloud,
   CloudRain,
   CloudSnow,
+  Moon,
   ArrowUp,
   ArrowDown,
   Lock,
 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
 import { Tag } from "./Tag.tsx";
@@ -31,6 +33,16 @@ export function LocationWeather({
   onRemoveFavourite,
 }: LocationWeatherProps) {
   const isAuthenticated = useIsAuthenticated();
+  const [currentTime, setCurrentTime] = useState(() => Math.floor(Date.now() / 1000));
+
+  // Update current time every minute
+  useEffect(() => {
+    const updateTime = () => {
+      setCurrentTime(Math.floor(Date.now() / 1000));
+    };
+    const interval = setInterval(updateTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
   function onClick() {
     if (!currentWeather) return;
@@ -41,6 +53,16 @@ export function LocationWeather({
       onAddFavourite(currentWeather.city);
     }
   }
+
+  const isNight = (() => {
+    if (!currentWeather) return false;
+    
+    const localTime = currentTime + currentWeather.timezone;
+    const sunrise = currentWeather.sunrise;
+    const sunset = currentWeather.sunset;
+    
+    return localTime < sunrise || localTime >= sunset;
+  })();
 
   return (
     <div className="w-full mx-auto">
@@ -132,7 +154,8 @@ export function LocationWeather({
             </div>
 
             <div className="pr-10 text-5xl sm:text-6xl font-bold flex flex-col items-center justify-center gap-1 sm:gap-2">
-              {currentWeather.condition === "Clear" && <Sun size={100} />}
+              {currentWeather.condition === "Clear" && isNight && <Moon size={100} />}
+              {currentWeather.condition === "Clear" && !isNight && <Sun size={100} />}
               {currentWeather.condition === "Clouds" && <Cloud size={100} />}
               {currentWeather.condition === "Rain" && <CloudRain size={100} />}
               {currentWeather.condition === "Snow" && <CloudSnow size={100} />}

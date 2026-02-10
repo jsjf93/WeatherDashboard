@@ -8,5 +8,8 @@ public sealed record GetWeatherByCityResponse(
     double Wind,
     int Humidity,
     double MinTemperature,
-    double MaxTemperature
+    double MaxTemperature,
+    long Sunrise,
+    long Sunset,
+    int Timezone
 );
