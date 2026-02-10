@@ -8,6 +8,7 @@ import {
   CloudSnow,
   ArrowUp,
   ArrowDown,
+  Lock,
 } from "lucide-react";
 import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
@@ -64,7 +65,7 @@ export function LocationWeather({
           <div className="flex items-center justify-between relative">
             <h2 className="sr-only">Current Weather</h2>
             <button
-              className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
+              className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed relative"
               aria-label={`Add ${currentWeather.city} to your favourites`}
               disabled={!isAuthenticated}
               title={
@@ -72,11 +73,17 @@ export function LocationWeather({
                   ? isFavourited
                     ? `Remove ${currentWeather.city} from your favourites`
                     : `Add ${currentWeather.city} to your favourites`
-                  : "Login to favourite locations"
+                  : "You must be signed in to favourite a location"
               }
               onClick={onClick}
             >
               <Star size={40} fill={isFavourited ? "yellow" : "none"} />
+              {!isAuthenticated && (
+                <Lock
+                  size={16}
+                  className="absolute top-0 right-0 bg-white rounded-full p-0.5"
+                />
+              )}
             </button>
             <div>
               <h2 className="text-4xl font-semibold mb-2">

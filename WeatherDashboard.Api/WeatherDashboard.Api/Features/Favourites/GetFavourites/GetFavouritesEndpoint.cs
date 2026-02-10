@@ -10,12 +10,12 @@ public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteReposi
     public override void Configure()
     {
         Get("/favourites");
+        AllowAnonymous();
         Summary(s =>
         {
             s.Summary = "Get user's favourite cities";
-            s.Description = "Retrieves all favourite cities for the authenticated user";
+            s.Description = "Retrieves all favourite cities for the authenticated user. Returns an empty list if user is not authenticated.";
             s.Responses[200] = "Successfully retrieved favourites";
-            s.Responses[401] = "Unauthorized";
         });
     }
 
@@ -29,9 +29,11 @@ public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteReposi
 
             await Send.OkAsync(response, ct);
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim"))
+        catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim") || ex.Message.Contains("HttpContext"))
         {
-            await Send.UnauthorizedAsync(ct);
+            // Return empty list for unauthenticated users
+            var emptyResponse = new GetFavouritesResponse(Array.Empty<FavouriteDto>());
+            await Send.OkAsync(emptyResponse, ct);
         }
     }
 }
