@@ -4,7 +4,7 @@ using WeatherDashboard.Api.Services;
 
 namespace WeatherDashboard.Api.Features.Favourites.GetFavourites;
 
-public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteRepository favouriteRepository)
+public class GetFavouritesEndpoint(IHttpContextAccessor httpContextAccessor, IUserContext userContext, UserFavouriteRepository favouriteRepository)
     : EndpointWithoutRequest<GetFavouritesResponse>
 {
     public override void Configure()
@@ -21,6 +21,15 @@ public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteReposi
 
     public override async Task HandleAsync(CancellationToken ct)
     {
+        // Check if user is authenticated before attempting to retrieve favourites
+        var httpContext = httpContextAccessor.HttpContext;
+        if (httpContext?.User?.Identity?.IsAuthenticated != true)
+        {
+            var emptyResponse = new GetFavouritesResponse(Array.Empty<FavouriteDto>());
+            await Send.OkAsync(emptyResponse, ct);
+            return;
+        }
+
         try
         {
             var favourites = await favouriteRepository.GetUserFavouritesAsync(userContext.UserId);
@@ -29,9 +38,9 @@ public class GetFavouritesEndpoint(IUserContext userContext, UserFavouriteReposi
 
             await Send.OkAsync(response, ct);
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains("not authenticated") || ex.Message.Contains("Email claim") || ex.Message.Contains("HttpContext"))
+        catch (InvalidOperationException)
         {
-            // Return empty list for unauthenticated users
+            // If there's any issue getting user context, return empty list
             var emptyResponse = new GetFavouritesResponse(Array.Empty<FavouriteDto>());
             await Send.OkAsync(emptyResponse, ct);
         }

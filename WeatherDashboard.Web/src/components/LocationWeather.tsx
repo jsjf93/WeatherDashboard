@@ -65,7 +65,7 @@ export function LocationWeather({
           <div className="flex items-center justify-between relative">
             <h2 className="sr-only">Current Weather</h2>
             <button
-              className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed relative"
+              className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
               aria-label={`Add ${currentWeather.city} to your favourites`}
               disabled={!isAuthenticated}
               title={
@@ -77,13 +77,15 @@ export function LocationWeather({
               }
               onClick={onClick}
             >
-              <Star size={40} fill={isFavourited ? "yellow" : "none"} />
-              {!isAuthenticated && (
-                <Lock
-                  size={16}
-                  className="absolute top-0 right-0 bg-white rounded-full p-0.5"
-                />
-              )}
+              <div className="relative">
+                <Star size={40} fill={isFavourited ? "yellow" : "none"} />
+                {!isAuthenticated && (
+                  <Lock
+                    size={16}
+                    className="absolute top-0 right-0 bg-white rounded-full p-0.5"
+                  />
+                )}
+              </div>
             </button>
             <div>
               <h2 className="text-4xl font-semibold mb-2">
