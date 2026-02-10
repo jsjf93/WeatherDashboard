@@ -7,6 +7,8 @@ namespace WeatherDashboard.Api.Features.Favourites.GetFavourites;
 public class GetFavouritesEndpoint(IHttpContextAccessor httpContextAccessor, IUserContext userContext, UserFavouriteRepository favouriteRepository)
     : EndpointWithoutRequest<GetFavouritesResponse>
 {
+    private static readonly GetFavouritesResponse EmptyResponse = new(Array.Empty<FavouriteDto>());
+
     public override void Configure()
     {
         Get("/favourites");
@@ -25,8 +27,7 @@ public class GetFavouritesEndpoint(IHttpContextAccessor httpContextAccessor, IUs
         var httpContext = httpContextAccessor.HttpContext;
         if (httpContext?.User?.Identity?.IsAuthenticated != true)
         {
-            var emptyResponse = new GetFavouritesResponse(Array.Empty<FavouriteDto>());
-            await Send.OkAsync(emptyResponse, ct);
+            await Send.OkAsync(EmptyResponse, ct);
             return;
         }
 
@@ -38,11 +39,12 @@ public class GetFavouritesEndpoint(IHttpContextAccessor httpContextAccessor, IUs
 
             await Send.OkAsync(response, ct);
         }
-        catch (InvalidOperationException)
+        catch (InvalidOperationException ex)
         {
-            // If there's any issue getting user context, return empty list
-            var emptyResponse = new GetFavouritesResponse(Array.Empty<FavouriteDto>());
-            await Send.OkAsync(emptyResponse, ct);
+            // Log the exception and return empty list for any user context issues
+            // This typically happens when there's a problem with claims or user initialization
+            Logger.LogWarning(ex, "Failed to retrieve user context or favourites. Returning empty list.");
+            await Send.OkAsync(EmptyResponse, ct);
         }
     }
 }
