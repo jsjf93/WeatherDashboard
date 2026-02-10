@@ -18,13 +18,13 @@ import {
   setCurrentLocation,
 } from "./features/location/locationSlice";
 import { useIsAuthenticated } from "@azure/msal-react";
-import { useState, useEffect } from "react";
+import { useCurrentTime } from "./hooks/useCurrentTime";
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const location = useAppSelector(selectCurrentLocation);
   const dispatch = useAppDispatch();
-  const [currentTime, setCurrentTime] = useState(() => Math.floor(Date.now() / 1000));
+  const currentTime = useCurrentTime();
   
   const {
     data: currentWeather,
@@ -48,15 +48,6 @@ function App() {
     });
   const [addFavourite] = useAddFavouriteMutation();
   const [removeFavourite] = useRemoveFavouriteMutation();
-
-  // Update current time every minute
-  useEffect(() => {
-    const updateTime = () => {
-      setCurrentTime(Math.floor(Date.now() / 1000));
-    };
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleAddFavourite = async (location: string) => {
     if (!location) return;
@@ -96,12 +87,8 @@ function App() {
     if (!currentWeather) return "theme-Clouds";
     
     // Determine if it's nighttime based on sunrise and sunset
-    const localTime = currentTime + currentWeather.timezone;
-    const sunrise = currentWeather.sunrise;
-    const sunset = currentWeather.sunset;
-    
-    // Check if current local time is outside sunrise-sunset window
-    const isNight = localTime < sunrise || localTime >= sunset;
+    // All values are Unix timestamps in UTC, so we can compare directly
+    const isNight = currentTime < currentWeather.sunrise || currentTime >= currentWeather.sunset;
     
     if (isNight) {
       return "theme-night";

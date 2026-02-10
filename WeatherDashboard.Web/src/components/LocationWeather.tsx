@@ -11,11 +11,11 @@ import {
   ArrowDown,
   Lock,
 } from "lucide-react";
-import { useState, useEffect } from "react";
 import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
 import { Tag } from "./Tag.tsx";
 import { useIsAuthenticated } from "@azure/msal-react";
+import { useCurrentTime } from "../hooks/useCurrentTime";
 
 interface LocationWeatherProps {
   currentWeather?: WeatherResponse;
@@ -33,16 +33,7 @@ export function LocationWeather({
   onRemoveFavourite,
 }: LocationWeatherProps) {
   const isAuthenticated = useIsAuthenticated();
-  const [currentTime, setCurrentTime] = useState(() => Math.floor(Date.now() / 1000));
-
-  // Update current time every minute
-  useEffect(() => {
-    const updateTime = () => {
-      setCurrentTime(Math.floor(Date.now() / 1000));
-    };
-    const interval = setInterval(updateTime, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  const currentTime = useCurrentTime();
 
   function onClick() {
     if (!currentWeather) return;
@@ -57,11 +48,8 @@ export function LocationWeather({
   const isNight = (() => {
     if (!currentWeather) return false;
     
-    const localTime = currentTime + currentWeather.timezone;
-    const sunrise = currentWeather.sunrise;
-    const sunset = currentWeather.sunset;
-    
-    return localTime < sunrise || localTime >= sunset;
+    // All values are Unix timestamps in UTC, so we can compare directly
+    return currentTime < currentWeather.sunrise || currentTime >= currentWeather.sunset;
   })();
 
   return (
