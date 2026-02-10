@@ -80,10 +80,7 @@ export function LocationWeather({
               <div className="relative">
                 <Star size={40} fill={isFavourited ? "yellow" : "none"} />
                 {!isAuthenticated && (
-                  <Lock
-                    size={16}
-                    className="absolute top-0 right-0 bg-white rounded-full p-0.5"
-                  />
+                  <Lock size={20} className="absolute -top-2 -right-2 p-0.5" />
                 )}
               </div>
             </button>
