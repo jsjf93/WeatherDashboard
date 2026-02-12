@@ -38,7 +38,7 @@ export function Insights({
 
           {!showLoading && !city ? (
             <p className="w-full text-lg text-gray-500">
-              Search for a city to see AI-powered weather insights.
+              Search for a city to see AI-powered weather insights
             </p>
           ) : isFetching ? (
             <InsightsSkeleton />

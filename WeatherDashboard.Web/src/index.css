@@ -27,7 +27,7 @@
     --accent-color: hsl(190 100% 20%);
   }
   .theme-night {
-    --bg-gradient: linear-gradient(135deg, hsl(230 40% 12%), hsl(240 50% 5%));
+    --bg-gradient: linear-gradient(135deg, hsl(230 40% 16%), hsl(240 50% 8%));
     --accent-color: hsl(260 100% 80%);
   }
 }
@@ -67,10 +67,10 @@
 
 @layer utilities {
   .glass {
-    @apply bg-black/30 backdrop-blur-md border border-white/10 shadow-xl;
+    @apply bg-black/40 backdrop-blur-md border border-white/20 shadow-xl;
   }
   .glass-card {
-    @apply bg-black/50 backdrop-blur-xl border border-white/15 shadow-2xl;
+    @apply bg-black/60 backdrop-blur-xl border border-white/25 shadow-2xl;
   }
   .text-shadow {
     text-shadow:
