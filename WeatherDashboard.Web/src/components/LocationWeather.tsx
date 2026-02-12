@@ -10,6 +10,7 @@ import {
   ArrowUp,
   ArrowDown,
   Lock,
+  MapPin,
 } from "lucide-react";
 import { Card } from "./Card";
 import type { WeatherResponse } from "../types";
@@ -65,7 +66,9 @@ export function LocationWeather({
         ) : !currentWeather ? (
           <div className="flex flex-col min-h-36">
             <h2 className="text-xs font-semibold mb-2 uppercase">
-              Current Weather
+              <span className="flex items-center gap-2">
+                <MapPin aria-hidden="true" /> Current Weather
+              </span>
             </h2>
             <p className="w-full text-lg text-gray-500">
               Search for a city to show the current weather

@@ -1,4 +1,4 @@
-import { Sun, Cloud, CloudRain, CloudSnow } from "lucide-react";
+import { Sun, Cloud, CloudRain, CloudSnow, CalendarDays } from "lucide-react";
 import { Card } from "./Card";
 import type { ForecastResponse, DailyForecast } from "../types";
 import dayjs from "dayjs";
@@ -35,7 +35,11 @@ export function Forecast({ forecastData, isLoading }: ForecastProps) {
     <div className="flex-none w-full md:w-55">
       <Card>
         <div className="flex flex-col gap-3 md:min-h-36">
-          <h2 className="text-xs font-semibold uppercase">Forecast</h2>
+          <h2 className="text-xs font-semibold uppercase">
+            <span className="flex items-center gap-2">
+              <CalendarDays aria-hidden="true" /> Forecast
+            </span>
+          </h2>
           {isLoading ? (
             // Skeleton loaders for forecast items
             Array.from({ length: 3 }).map((_, index) => (
@@ -50,6 +54,10 @@ export function Forecast({ forecastData, isLoading }: ForecastProps) {
                 </div>
               </div>
             ))
+          ) : displayData.length === 0 ? (
+            <p className="w-full text-lg text-gray-500">
+              Search for a city to see the weather forecast
+            </p>
           ) : (
             displayData.map((forecast: DailyForecast, index: number) => {
               const Icon = getWeatherIcon(forecast.condition);
