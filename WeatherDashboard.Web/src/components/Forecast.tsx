@@ -37,7 +37,7 @@ export function Forecast({ forecastData, isLoading }: ForecastProps) {
         <div className="flex flex-col gap-3 md:min-h-36">
           <h2 className="text-xs font-semibold uppercase">
             <span className="flex items-center gap-2">
-              <CalendarDays /> Forecast
+              <CalendarDays aria-hidden="true" /> Forecast
             </span>
           </h2>
           {isLoading ? (

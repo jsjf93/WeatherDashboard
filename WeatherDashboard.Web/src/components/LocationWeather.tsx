@@ -67,7 +67,7 @@ export function LocationWeather({
           <div className="flex flex-col min-h-36">
             <h2 className="text-xs font-semibold mb-2 uppercase">
               <span className="flex items-center gap-2">
-                <MapPin /> Current Weather
+                <MapPin aria-hidden="true" /> Current Weather
               </span>
             </h2>
             <p className="w-full text-lg text-gray-500">

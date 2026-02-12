@@ -30,7 +30,7 @@ export function Insights({
         <div className="flex flex-col min-h-36 items-start">
           <h2 className="text-xs font-semibold mb-2 uppercase">
             <span className="flex items-center gap-2">
-              <Sparkles /> AI Insights
+              <Sparkles aria-hidden="true" /> AI Insights
             </span>
           </h2>
 
