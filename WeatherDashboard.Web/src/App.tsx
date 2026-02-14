@@ -23,6 +23,7 @@ import { useCurrentTime } from "./hooks/useCurrentTime";
 
 const THEME_CLASSES = ['theme-Clear', 'theme-Rain', 'theme-Clouds', 'theme-Snow', 'theme-night'] as const;
 const DEFAULT_THEME = 'theme-Clouds';
+const VALID_CONDITIONS = ['Clear', 'Rain', 'Clouds', 'Snow'] as const;
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
@@ -102,8 +103,16 @@ function App() {
         currentTime < currentWeather.sunrise ||
         currentTime >= currentWeather.sunset;
 
-      const themeClass = isNight ? "theme-night" : `theme-${currentWeather.condition}`;
-      document.body.classList.add(themeClass);
+      if (isNight) {
+        document.body.classList.add("theme-night");
+      } else {
+        // Validate condition against known theme classes
+        const condition = currentWeather.condition;
+        const themeClass = VALID_CONDITIONS.includes(condition as typeof VALID_CONDITIONS[number])
+          ? `theme-${condition}`
+          : DEFAULT_THEME;
+        document.body.classList.add(themeClass);
+      }
     }
 
     // Cleanup function to remove all theme classes on unmount or before next effect
