@@ -25,7 +25,7 @@ function App() {
   const location = useAppSelector(selectCurrentLocation);
   const dispatch = useAppDispatch();
   const currentTime = useCurrentTime();
-  
+
   const {
     data: currentWeather,
     isFetching,
@@ -85,15 +85,17 @@ function App() {
 
   const getThemeColors = () => {
     if (!currentWeather) return "theme-Clouds";
-    
+
     // Determine if it's nighttime based on sunrise and sunset
     // All values are Unix timestamps in UTC, so we can compare directly
-    const isNight = currentTime < currentWeather.sunrise || currentTime >= currentWeather.sunset;
-    
+    const isNight =
+      currentTime < currentWeather.sunrise ||
+      currentTime >= currentWeather.sunset;
+
     if (isNight) {
       return "theme-night";
     }
-    
+
     return `theme-${currentWeather.condition}`;
   };
 
@@ -102,7 +104,6 @@ function App() {
       <ToastContainer />
       <div
         className={`min-h-screen flex flex-col p-4 md:p-10 grow ${getThemeColors()}`}
-        style={{ background: "var(--bg-gradient)" }}
       >
         <Header />
 
