@@ -56,6 +56,13 @@
   --radius-sm: 0.5rem;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  background: var(--bg-gradient);
+}
+
 @layer base {
   * {
     @apply border-border;
