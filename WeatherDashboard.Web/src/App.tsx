@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { SearchBar } from "./components/SearchBar";
 import { Insights } from "./components/Insights";
 import { Forecast } from "./components/Forecast";
@@ -83,8 +84,12 @@ function App() {
     )?.id;
   }
 
-  const getThemeColors = () => {
-    if (!currentWeather) return "theme-Clouds";
+  // Apply theme class to body element so CSS variables are available to html/body/#root
+  useEffect(() => {
+    if (!currentWeather) {
+      document.body.className = "theme-Clouds";
+      return;
+    }
 
     // Determine if it's nighttime based on sunrise and sunset
     // All values are Unix timestamps in UTC, so we can compare directly
@@ -92,19 +97,14 @@ function App() {
       currentTime < currentWeather.sunrise ||
       currentTime >= currentWeather.sunset;
 
-    if (isNight) {
-      return "theme-night";
-    }
-
-    return `theme-${currentWeather.condition}`;
-  };
+    const themeClass = isNight ? "theme-night" : `theme-${currentWeather.condition}`;
+    document.body.className = themeClass;
+  }, [currentWeather, currentTime]);
 
   return (
     <>
       <ToastContainer />
-      <div
-        className={`min-h-screen flex flex-col p-4 md:p-10 grow ${getThemeColors()}`}
-      >
+      <div className="min-h-screen flex flex-col p-4 md:p-10 grow">
         <Header />
 
         <main className="flex flex-col gap-4 md:gap-5">
