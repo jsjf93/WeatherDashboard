@@ -86,8 +86,13 @@ function App() {
 
   // Apply theme class to body element so CSS variables are available to html/body/#root
   useEffect(() => {
+    // Remove all theme classes
+    const themeClasses = ['theme-Clear', 'theme-Rain', 'theme-Clouds', 'theme-Snow', 'theme-night'];
+    document.body.classList.remove(...themeClasses);
+
+    // Determine and add the appropriate theme class
     if (!currentWeather) {
-      document.body.className = "theme-Clouds";
+      document.body.classList.add("theme-Clouds");
       return;
     }
 
@@ -98,7 +103,7 @@ function App() {
       currentTime >= currentWeather.sunset;
 
     const themeClass = isNight ? "theme-night" : `theme-${currentWeather.condition}`;
-    document.body.className = themeClass;
+    document.body.classList.add(themeClass);
   }, [currentWeather, currentTime]);
 
   return (
