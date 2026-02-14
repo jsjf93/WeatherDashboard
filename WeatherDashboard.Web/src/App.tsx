@@ -21,6 +21,8 @@ import {
 import { useIsAuthenticated } from "@azure/msal-react";
 import { useCurrentTime } from "./hooks/useCurrentTime";
 
+const THEME_CLASSES = ['theme-Clear', 'theme-Rain', 'theme-Clouds', 'theme-Snow', 'theme-night'] as const;
+
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const location = useAppSelector(selectCurrentLocation);
@@ -87,13 +89,14 @@ function App() {
   // Apply theme class to body element so CSS variables are available to html/body/#root
   useEffect(() => {
     // Remove all theme classes
-    const themeClasses = ['theme-Clear', 'theme-Rain', 'theme-Clouds', 'theme-Snow', 'theme-night'];
-    document.body.classList.remove(...themeClasses);
+    document.body.classList.remove(...THEME_CLASSES);
 
     // Determine and add the appropriate theme class
     if (!currentWeather) {
       document.body.classList.add("theme-Clouds");
-      return;
+      return () => {
+        document.body.classList.remove(...THEME_CLASSES);
+      };
     }
 
     // Determine if it's nighttime based on sunrise and sunset
@@ -104,6 +107,10 @@ function App() {
 
     const themeClass = isNight ? "theme-night" : `theme-${currentWeather.condition}`;
     document.body.classList.add(themeClass);
+
+    return () => {
+      document.body.classList.remove(...THEME_CLASSES);
+    };
   }, [currentWeather, currentTime]);
 
   return (
