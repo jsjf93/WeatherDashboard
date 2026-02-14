@@ -22,6 +22,7 @@ import { useIsAuthenticated } from "@azure/msal-react";
 import { useCurrentTime } from "./hooks/useCurrentTime";
 
 const THEME_CLASSES = ['theme-Clear', 'theme-Rain', 'theme-Clouds', 'theme-Snow', 'theme-night'] as const;
+const DEFAULT_THEME = 'theme-Clouds';
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
@@ -93,21 +94,19 @@ function App() {
 
     // Determine and add the appropriate theme class
     if (!currentWeather) {
-      document.body.classList.add("theme-Clouds");
-      return () => {
-        document.body.classList.remove(...THEME_CLASSES);
-      };
+      document.body.classList.add(DEFAULT_THEME);
+    } else {
+      // Determine if it's nighttime based on sunrise and sunset
+      // All values are Unix timestamps in UTC, so we can compare directly
+      const isNight =
+        currentTime < currentWeather.sunrise ||
+        currentTime >= currentWeather.sunset;
+
+      const themeClass = isNight ? "theme-night" : `theme-${currentWeather.condition}`;
+      document.body.classList.add(themeClass);
     }
 
-    // Determine if it's nighttime based on sunrise and sunset
-    // All values are Unix timestamps in UTC, so we can compare directly
-    const isNight =
-      currentTime < currentWeather.sunrise ||
-      currentTime >= currentWeather.sunset;
-
-    const themeClass = isNight ? "theme-night" : `theme-${currentWeather.condition}`;
-    document.body.classList.add(themeClass);
-
+    // Cleanup function to remove all theme classes on unmount or before next effect
     return () => {
       document.body.classList.remove(...THEME_CLASSES);
     };
