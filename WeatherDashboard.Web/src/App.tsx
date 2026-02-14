@@ -25,6 +25,10 @@ const THEME_CLASSES = ['theme-Clear', 'theme-Rain', 'theme-Clouds', 'theme-Snow'
 const DEFAULT_THEME = 'theme-Clouds';
 const VALID_CONDITIONS = ['Clear', 'Rain', 'Clouds', 'Snow'] as const;
 
+function isValidCondition(condition: string): condition is typeof VALID_CONDITIONS[number] {
+  return VALID_CONDITIONS.includes(condition as typeof VALID_CONDITIONS[number]);
+}
+
 function App() {
   const isAuthenticated = useIsAuthenticated();
   const location = useAppSelector(selectCurrentLocation);
@@ -108,7 +112,7 @@ function App() {
       } else {
         // Validate condition against known theme classes
         const condition = currentWeather.condition;
-        const themeClass = VALID_CONDITIONS.includes(condition as typeof VALID_CONDITIONS[number])
+        const themeClass = isValidCondition(condition)
           ? `theme-${condition}`
           : DEFAULT_THEME;
         document.body.classList.add(themeClass);
