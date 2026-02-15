@@ -104,6 +104,7 @@ function App() {
       <ToastContainer />
       <div
         className={`min-h-screen flex flex-col p-4 md:p-10 grow ${getThemeColors()}`}
+        style={{ background: "var(--bg-gradient)" }}
       >
         <Header />
 
