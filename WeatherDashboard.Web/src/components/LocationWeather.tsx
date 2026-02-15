@@ -24,6 +24,7 @@ interface LocationWeatherProps {
   isLoading: boolean;
   onAddFavourite: (city: string) => void;
   onRemoveFavourite: () => void;
+  isSavingFavourite: boolean;
 }
 
 export function LocationWeather({
@@ -32,6 +33,7 @@ export function LocationWeather({
   isLoading,
   onAddFavourite,
   onRemoveFavourite,
+  isSavingFavourite,
 }: LocationWeatherProps) {
   const isAuthenticated = useIsAuthenticated();
   const currentTime = useCurrentTime();
@@ -48,9 +50,12 @@ export function LocationWeather({
 
   const isNight = (() => {
     if (!currentWeather) return false;
-    
+
     // All values are Unix timestamps in UTC, so we can compare directly
-    return currentTime < currentWeather.sunrise || currentTime >= currentWeather.sunset;
+    return (
+      currentTime < currentWeather.sunrise ||
+      currentTime >= currentWeather.sunset
+    );
   })();
 
   return (
@@ -80,7 +85,7 @@ export function LocationWeather({
             <button
               className="absolute top-0 right-0 cursor-pointer hover:brightness-90 transition disabled:cursor-not-allowed"
               aria-label={`Add ${currentWeather.city} to your favourites`}
-              disabled={!isAuthenticated}
+              disabled={!isAuthenticated || isSavingFavourite}
               title={
                 isAuthenticated
                   ? isFavourited
@@ -145,8 +150,12 @@ export function LocationWeather({
             </div>
 
             <div className="pr-10 text-5xl sm:text-6xl font-bold flex flex-col items-center justify-center gap-1 sm:gap-2">
-              {currentWeather.condition === "Clear" && isNight && <Moon size={100} />}
-              {currentWeather.condition === "Clear" && !isNight && <Sun size={100} />}
+              {currentWeather.condition === "Clear" && isNight && (
+                <Moon size={100} />
+              )}
+              {currentWeather.condition === "Clear" && !isNight && (
+                <Sun size={100} />
+              )}
               {currentWeather.condition === "Clouds" && <Cloud size={100} />}
               {currentWeather.condition === "Rain" && <CloudRain size={100} />}
               {currentWeather.condition === "Snow" && <CloudSnow size={100} />}

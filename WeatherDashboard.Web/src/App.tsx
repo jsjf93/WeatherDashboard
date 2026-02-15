@@ -46,7 +46,8 @@ function App() {
     useGetFavouritesQuery(undefined, {
       skip: !isAuthenticated,
     });
-  const [addFavourite] = useAddFavouriteMutation();
+  const [addFavourite, { isLoading: isAddFavouriteLoading }] =
+    useAddFavouriteMutation();
   const [removeFavourite] = useRemoveFavouriteMutation();
 
   const handleAddFavourite = async (location: string) => {
@@ -126,6 +127,7 @@ function App() {
               onRemoveFavourite={() =>
                 handleRemoveFavourite(getFavouriteId(currentWeather?.city))
               }
+              isSavingFavourite={isAddFavouriteLoading}
             />
 
             <div className="w-full max-w-3xl mx-auto flex flex-col md:flex-row gap-2 md:gap-4">
