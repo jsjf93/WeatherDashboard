@@ -3,7 +3,7 @@ export interface WeatherResponse {
   temperature: number;
   humidity: number;
   wind: number;
-  condition: "Clear" | "Clouds" | "Rain" | "Snow";
+  condition: "Clear" | "Clouds" | "Rain" | "Snow" | "Drizzle" | "Thunderstorm" | "Mist" | "Smoke" | "Haze" | "Dust" | "Fog" | "Sand" | "Ash" | "Squall" | "Tornado";
   description: string;
   minTemperature: number;
   maxTemperature: number;
@@ -22,7 +22,7 @@ export interface DailyForecast {
   temp: number;
   minTemp: number;
   maxTemp: number;
-  condition: "Clear" | "Clouds" | "Rain" | "Snow";
+  condition: "Clear" | "Clouds" | "Rain" | "Snow" | "Drizzle" | "Thunderstorm" | "Mist" | "Smoke" | "Haze" | "Dust" | "Fog" | "Sand" | "Ash" | "Squall" | "Tornado";
   feelsLike: number;
   humidity: number;
   windSpeed: number;

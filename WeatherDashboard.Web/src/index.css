@@ -26,6 +26,58 @@
     );
     --accent-color: hsl(190 100% 20%);
   }
+  .theme-Drizzle {
+    --bg-gradient: linear-gradient(
+      135deg,
+      hsl(210 90% 55%),
+      hsl(225 90% 45%)
+    );
+    --accent-color: hsl(200 100% 90%);
+  }
+  .theme-Thunderstorm {
+    --bg-gradient: linear-gradient(
+      135deg,
+      hsl(240 35% 25%),
+      hsl(250 45% 15%)
+    );
+    --accent-color: hsl(50 100% 85%);
+  }
+  .theme-Mist {
+    --bg-gradient: linear-gradient(135deg, hsl(200 15% 60%), hsl(210 15% 45%));
+    --accent-color: hsl(0 0% 95%);
+  }
+  .theme-Smoke {
+    --bg-gradient: linear-gradient(135deg, hsl(0 5% 50%), hsl(0 5% 35%));
+    --accent-color: hsl(0 0% 95%);
+  }
+  .theme-Haze {
+    --bg-gradient: linear-gradient(135deg, hsl(40 20% 65%), hsl(35 20% 50%));
+    --accent-color: hsl(0 0% 100%);
+  }
+  .theme-Dust {
+    --bg-gradient: linear-gradient(135deg, hsl(30 35% 55%), hsl(25 35% 40%));
+    --accent-color: hsl(30 40% 95%);
+  }
+  .theme-Fog {
+    --bg-gradient: linear-gradient(135deg, hsl(200 12% 65%), hsl(210 12% 50%));
+    --accent-color: hsl(0 0% 100%);
+  }
+  .theme-Sand {
+    --bg-gradient: linear-gradient(135deg, hsl(40 50% 60%), hsl(35 45% 45%));
+    --accent-color: hsl(40 50% 95%);
+  }
+  .theme-Ash {
+    --bg-gradient: linear-gradient(135deg, hsl(0 3% 45%), hsl(0 3% 30%));
+    --accent-color: hsl(0 0% 95%);
+  }
+  .theme-Squall {
+    --bg-gradient: linear-gradient(135deg, hsl(200 30% 45%), hsl(210 35% 30%));
+    --accent-color: hsl(200 50% 90%);
+  }
+  .theme-Tornado {
+    --bg-gradient: linear-gradient(135deg, hsl(0 10% 35%), hsl(0 15% 20%));
+    --accent-color: hsl(0 50% 90%);
+  }
   .theme-night {
     --bg-gradient: linear-gradient(135deg, hsl(230 40% 16%), hsl(240 50% 8%));
     --accent-color: hsl(260 100% 80%);
